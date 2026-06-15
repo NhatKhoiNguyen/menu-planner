@@ -1,0 +1,133 @@
+/* Container padding */
+.contribute-container {
+  max-width: 900px !important;
+  margin: auto;
+  padding-bottom: 50px;
+}
+
+/* Section heading */
+.contribute-container h3 {
+  font-weight: bold;
+  color: #FF8C00;
+}
+
+.contribute-container h5 {
+  font-weight: bold;
+  color: #FF8C00;
+}
+
+/* Ingredient row spacing */
+.contribute-container .row.mb-2 {
+  align-items: center;
+}
+
+/* Button */
+.contribute-container button {
+  margin-top: 5px;
+  background-color: #FFA500;
+  border-color: #FFA500;
+  color: white;
+}
+
+.contribute-container .btn-primary {
+  background-color: #FFA500;
+  border-color: #FFA500;
+  color: white;
+}
+
+.contribute-container button:hover, .contribute-container .btn-primary:hover {
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+}
+
+.contribute-container .btn-secondary, .contribute-container .btn-outline-secondary {
+  border-color: #FFB347;
+  background-color: #FFB347;
+}
+
+.contribute-container .btn-secondary:hover, .contribute-container .btn-outline-secondary:hover {
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+  color: white;
+}
+
+.contribute-container .btn-danger, .contribute-container .btn-outline-danger {
+  background-color: #FF6347;
+  border-color: #FF6347;
+}
+
+.contribute-container .btn-danger:hover, .contribute-container .btn-outline-danger:hover {
+  background-color: #FF3B20;
+  border-color: #FF3B20;
+}
+
+/* Main image preview */
+.contribute-container img.mt-2 {
+  border-radius: 8px;
+  border: 2px solid #FFA500;
+}
+
+/* Step card */
+.step-card {
+  background-color: #FFF4E1;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #FFDAB9;;
+  margin-bottom: 15px;
+}
+
+/* Image grid for step images */
+.step-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Individual step image with delete button */
+.step-images div {
+  position: relative;
+}
+
+.step-images img {
+  height: 80px;
+  border-radius: 4px;
+  border: 1px solid #FFB347;
+}
+
+.step-images button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px 6px;
+  font-size: 12px;
+  background-color: #FF6347;
+  line-height: 1;
+  border: none;
+}
+
+/* Tag and allergen checkbox groups */
+.contribute-container .d-flex.flex-wrap.gap-2 {
+  gap: 8px !important;
+}
+
+/* File input spacing */
+.contribute-container form .form-control[type="file"] {
+  margin-top: 5px;
+}
+
+/* Disable button look when uploading */
+.contribute-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contribute-container label, .contribute-container .form-label {
+  color: #333;
+  font-weight: 500;
+}
+
+.contribute-container .form-check-label {
+  color: #333;
+  font-weight: 400;
+}

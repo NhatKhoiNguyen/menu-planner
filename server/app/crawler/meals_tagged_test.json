@@ -1,0 +1,89 @@
+[
+  {
+    "title": "Cơm chiên dương châu thập cẩm",
+    "servings": "1",
+    "ingredients": [
+      {
+        "name": "Cơm",
+        "amount": "1 chén"
+      },
+      {
+        "name": "Trứng gà",
+        "amount": "0.5 quả"
+      },
+      {
+        "name": "Thịt nguội",
+        "amount": "50 g"
+      },
+      {
+        "name": "Tôm tươi",
+        "amount": "50 g"
+      },
+      {
+        "name": "Cà rốt",
+        "amount": "0.5 củ"
+      },
+      {
+        "name": "Bắp hột",
+        "amount": "12.5 g"
+      },
+      {
+        "name": "Đậu Hà Lan",
+        "amount": "12.5 g"
+      },
+      {
+        "name": "Hạt nêm",
+        "amount": "1/2 muỗng cà phê"
+      },
+      {
+        "name": "Dầu ăn",
+        "amount": "1/2 muỗng canh"
+      },
+      {
+        "name": "Nước tương",
+        "amount": "1/2 muỗng cà phê"
+      }
+    ],
+    "steps": [
+      {
+        "step": "Tôm bóc vỏ, xào chín. Thịt nguội cắt hạt lựu. Trứng gà đập ra chén, đánh tan, cho chút hạt nêm, khuấy đều. Cà rốt cắt hạt lựu. Đậu Hà Lan rửa sạch, chần chín.",
+        "images": [
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-355419376650.jpg",
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-904774957568.jpg"
+        ]
+      },
+      {
+        "step": "Chảo đặt lên bếp, đun nóng 1 muỗng canh dầu ăn, đổ trứng vào chảo, nhanh tay đảo cho trứng khỏi đông bánh lại. Tiếp đó cho đậu Hà Lan, cà rốt, bắp hột đảo nhanh tay. Nêm thêm chút gia vị cho đậm đà.",
+        "images": [
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-426359809115.jpg",
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-424040851246.jpg"
+        ]
+      },
+      {
+        "step": "Khi rau củ chín thì cho thịt nguội và tôm vào xào cùng.",
+        "images": [
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-220729340705.jpg",
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-429199443124.jpg"
+        ]
+      },
+      {
+        "step": "Cho cơm vào đảo đều cùng các nguyên liệu. Nêm nếm lại lần nữa cho vừa ăn. Rang cơm đến khi hạt cơm chín săn thì rắc hành lá rồi tắt bếp.",
+        "images": [
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-379346851384.jpg"
+        ]
+      },
+      {
+        "step": "Múc cơm ra chén, khi ăn rưới thêm chút nước tương cho thơm và đậm đà!",
+        "images": [
+          "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-932691571717.jpg"
+        ]
+      }
+    ],
+    "heading": "Cách làm món ăn (5 bước)",
+    "main_image": "https://storage.googleapis.com/onelife-public/blog.onelife.vn/2021/10/cach-lam-com-chien-duong-chau-thap-cam-mon-an-sang-932691571717.jpg",
+    "estimated_calories": "380",
+    "tags": ["Món Á", "Kết hợp Á - Âu"],
+    "type": "main",
+    "allergens": ["Trứng", "Hải sản", "Đậu nành"]
+  }
+]

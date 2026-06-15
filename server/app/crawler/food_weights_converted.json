@@ -1,0 +1,662 @@
+[
+    {
+        "name": "Bí xanh (baby)",
+        "unit": "quả",
+        "weight": 11
+    },
+    {
+        "name": "Bí xanh (mùa hè)",
+        "unit": "quả",
+        "weight": 150
+    },
+    {
+        "name": "Bí đao",
+        "unit": "quả",
+        "weight": 500
+    },
+    {
+        "name": "Bông hẹ",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Bưởi chùm",
+        "unit": "quả",
+        "weight": 300
+    },
+    {
+        "name": "Bưởi",
+        "unit": "quả",
+        "weight": 400
+    },
+    {
+        "name": "Bầu",
+        "unit": "quả",
+        "weight": 800
+    },
+    {
+        "name": "Bắp ngô ngọt",
+        "unit": "bắp",
+        "weight": 150
+    },
+    {
+        "name": "Cam",
+        "unit": "quả",
+        "weight": 150
+    },
+    {
+        "name": "Chanh",
+        "unit": "quả",
+        "weight": 40
+    },
+    {
+        "name": "Chanh dây",
+        "unit": "quả",
+        "weight": 40
+    },
+    {
+        "name": "Chuối",
+        "unit": "quả",
+        "weight": 118
+    },
+    {
+        "name": "Chôm chôm",
+        "unit": "quả",
+        "weight": 15
+    },
+    {
+        "name": "Cà chua",
+        "unit": "quả",
+        "weight": 120
+    },
+    {
+        "name": "Cà chua bi",
+        "unit": "quả",
+        "weight": 20
+    },
+    {
+        "name": "Cà rốt",
+        "unit": "củ",
+        "weight": 61
+    },
+    {
+        "name": "Cà tím",
+        "unit": "quả",
+        "weight": 200
+    },
+    {
+        "name": "Cây atisô",
+        "unit": "bông",
+        "weight": 300
+    },
+    {
+        "name": "Cây đại hoàng",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Cải bắp",
+        "unit": "cây",
+        "weight": 500
+    },
+    {
+        "name": "Cải cúc / rau tần ô",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Cải ngồng/cải rổ",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Cải thìa",
+        "unit": "cây",
+        "weight": 50
+    },
+    {
+        "name": "Cải thảo",
+        "unit": "cây",
+        "weight": 500
+    },
+    {
+        "name": "Cải xanh turnips",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Cải xoong / xà lách xoong",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Cải xoăn Kale",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Cần tây",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Củ cái trắng",
+        "unit": "củ",
+        "weight": 250
+    },
+    {
+        "name": "Củ diếp xoắn",
+        "unit": "củ",
+        "weight": 60
+    },
+    {
+        "name": "Củ dền",
+        "unit": "củ",
+        "weight": 125
+    },
+    {
+        "name": "Củ hành",
+        "unit": "củ",
+        "weight": 150
+    },
+    {
+        "name": "Củ nghệ (gia vị)",
+        "unit": "củ",
+        "weight": 10
+    },
+    {
+        "name": "Củ từ",
+        "unit": "củ",
+        "weight": 100
+    },
+    {
+        "name": "Củ đậu",
+        "unit": "củ",
+        "weight": 300
+    },
+    {
+        "name": "Diếp Lô Lô",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Dâu tây",
+        "unit": "quả",
+        "weight": 12
+    },
+    {
+        "name": "Dưa chuột có vỏ",
+        "unit": "quả",
+        "weight": 201
+    },
+    {
+        "name": "Dưa chuột gọt vỏ",
+        "unit": "quả",
+        "weight": 180
+    },
+    {
+        "name": "Dưa cải bắp",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Dưa cải bẹ",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Dưa gang",
+        "unit": "quả",
+        "weight": 500
+    },
+    {
+        "name": "Dưa hấu",
+        "unit": "miếng",
+        "weight": 200
+    },
+    {
+        "name": "Dưa lưới (honeydew), dưa lê",
+        "unit": "quả",
+        "weight": 1000
+    },
+    {
+        "name": "Dưa ruột vàng (cantaloupe)",
+        "unit": "quả",
+        "weight": 552
+    },
+    {
+        "name": "Dưa vàng (casaba)",
+        "unit": "quả",
+        "weight": 1640
+    },
+    {
+        "name": "Dọc mùng",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Dứa",
+        "unit": "quả",
+        "weight": 1200
+    },
+    {
+        "name": "Thơm",
+        "unit": "quả",
+        "weight": 1200
+    },
+    {
+        "name": "Dừa, cùi",
+        "unit": "phần cùi từ 1 quả",
+        "weight": 283
+    },
+    {
+        "name": "Gừng",
+        "unit": "củ",
+        "weight": 20
+    },
+    {
+        "name": "Hoa chuối",
+        "unit": "bông",
+        "weight": 300
+    },
+    {
+        "name": "Hành lá",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Húng quế",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Hồng xiêm / Sa bô chê",
+        "unit": "quả",
+        "weight": 70
+    },
+    {
+        "name": "Hẹ lá",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Khoai lang",
+        "unit": "củ",
+        "weight": 150
+    },
+    {
+        "name": "Khoai sọ",
+        "unit": "củ",
+        "weight": 50
+    },
+    {
+        "name": "Khoai tây",
+        "unit": "củ",
+        "weight": 170
+    },
+    {
+        "name": "Khế",
+        "unit": "quả",
+        "weight": 70
+    },
+    {
+        "name": "Khổ qua (lá)",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Khổ qua (quả)",
+        "unit": "quả",
+        "weight": 100
+    },
+    {
+        "name": "Kiwi",
+        "unit": "quả",
+        "weight": 80
+    },
+    {
+        "name": "Lá diếp xoắn",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Lê",
+        "unit": "quả",
+        "weight": 200
+    },
+    {
+        "name": "Me chua",
+        "unit": "quả",
+        "weight": 10
+    },
+    {
+        "name": "Mít",
+        "unit": "múi",
+        "weight": 30
+    },
+    {
+        "name": "Măng tre",
+        "unit": "phần non",
+        "weight": 100
+    },
+    {
+        "name": "Măng tây",
+        "unit": "ngọn",
+        "weight": 20
+    },
+    {
+        "name": "Mướp tây / đậu bắp",
+        "unit": "quả",
+        "weight": 15
+    },
+    {
+        "name": "Mướp",
+        "unit": "quả",
+        "weight": 200
+    },
+    {
+        "name": "Mận",
+        "unit": "quả",
+        "weight": 40
+    },
+    {
+        "name": "Ngó sen",
+        "unit": "đốt",
+        "weight": 50
+    },
+    {
+        "name": "Ngọn xu xu",
+        "unit": "ngọn",
+        "weight": 30
+    },
+    {
+        "name": "Nho",
+        "unit": "quả",
+        "weight": 6
+    },
+    {
+        "name": "Quả bí ngô (pumpkin)",
+        "unit": "miếng",
+        "weight": 100
+    },
+    {
+        "name": "Quả bí đỏ (acorn squash)",
+        "unit": "quả",
+        "weight": 500
+    },
+    {
+        "name": "Quả bí đỏ (butternut squash)",
+        "unit": "quả",
+        "weight": 800
+    },
+    {
+        "name": "Quả bơ",
+        "unit": "quả",
+        "weight": 215
+    },
+    {
+        "name": "Quả hồng bì (?)",
+        "unit": "quả",
+        "weight": 5
+    },
+    {
+        "name": "Quả hồng",
+        "unit": "quả",
+        "weight": 150
+    },
+    {
+        "name": "Quả lựu",
+        "unit": "quả",
+        "weight": 250
+    },
+    {
+        "name": "Quả na",
+        "unit": "quả",
+        "weight": 200
+    },
+    {
+        "name": "Quả nhãn",
+        "unit": "quả",
+        "weight": 5
+    },
+    {
+        "name": "Quả quýt",
+        "unit": "quả",
+        "weight": 70
+    },
+    {
+        "name": "Quả đào",
+        "unit": "quả",
+        "weight": 150
+    },
+    {
+        "name": "Quất / trái tắc",
+        "unit": "quả",
+        "weight": 10
+    },
+    {
+        "name": "Rau bí",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau diếp xanh (xà lách xanh)",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau diếp đỏ (xà lách đỏ)",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau dền",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau húng",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Rau khoai lang",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau kinh giới",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Rau muống",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau mùi tây (ngò tây)",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Rau mồng tơi",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau ngót",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Rau ngổ",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Rau thì là",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Rau đay",
+        "unit": "gram",
+        "weight": 100
+    },
+    {
+        "name": "Su hào",
+        "unit": "củ",
+        "weight": 200
+    },
+    {
+        "name": "Su su/Xu xu",
+        "unit": "quả",
+        "weight": 203
+    },
+    {
+        "name": "Súp lơ",
+        "unit": "cây",
+        "weight": 700
+    },
+    {
+        "name": "Sả",
+        "unit": "cây",
+        "weight": 30
+    },
+    {
+        "name": "Sầu riêng",
+        "unit": "múi",
+        "weight": 50
+    },
+    {
+        "name": "Thanh long",
+        "unit": "quả",
+        "weight": 300
+    },
+    {
+        "name": "Trái cóc",
+        "unit": "quả",
+        "weight": 110
+    },
+    {
+        "name": "Táo",
+        "unit": "quả",
+        "weight": 100
+    },
+    {
+        "name": "Tía tô",
+        "unit": "gram",
+        "weight": 10
+    },
+    {
+        "name": "Tỏi tây",
+        "unit": "cây",
+        "weight": 150
+    },
+    {
+        "name": "Tỏi",
+        "unit": "củ",
+        "weight": 50
+    },
+    {
+        "name": "Vải khô",
+        "unit": "quả",
+        "weight": 2
+    },
+    {
+        "name": "Vải",
+        "unit": "quả",
+        "weight": 8
+    },
+    {
+        "name": "Xoài",
+        "unit": "quả",
+        "weight": 300
+    },
+    {
+        "name": "Xà lách búp Mỹ",
+        "unit": "cây",
+        "weight": 200
+    },
+    {
+        "name": "Đu đủ",
+        "unit": "quả",
+        "weight": 800
+    },
+    {
+        "name": "Đậu côve / đậu đũa",
+        "unit": "quả",
+        "weight": 10
+    },
+    {
+        "name": "Đậu nành (xanh)",
+        "unit": "quả",
+        "weight": 5
+    },
+    {
+        "name": "Đậu rồng (hạt)",
+        "unit": "hạt",
+        "weight": 1
+    },
+    {
+        "name": "Ổi",
+        "unit": "quả",
+        "weight": 400
+    },
+    {
+        "name": "Ớt vàng ngọt",
+        "unit": "quả",
+        "weight": 150
+    },
+    {
+        "name": "Ớt xanh ngọt",
+        "unit": "quả",
+        "weight": 150
+    },
+    {
+        "name": "Ớt xanh",
+        "unit": "quả",
+        "weight": 20
+    },
+    {
+        "name": "Ớt đỏ ngọt",
+        "unit": "quả",
+        "weight": 150
+    },
+    {
+        "name": "Đùi gà",
+        "unit": "cái",
+        "weight": 150
+    },
+    {
+        "name": "Cánh gà",
+        "unit": "cái",
+        "weight": 80
+    },
+    {
+        "name": "Trứng",
+        "unit": "cái",
+        "weight": 50
+    },
+    {
+        "name": "Trứng",
+        "unit": "quả",
+        "weight": 50
+    },
+    {
+        "name": "Trứng cút",
+        "unit": "quả",
+        "weight": 10
+    },
+    {
+        "name": "Trứng cút",
+        "unit": "cái",
+        "weight": 50
+    },
+    {
+        "name": "Chân gà",
+        "unit": "cái",
+        "weight": 40
+    }
+]

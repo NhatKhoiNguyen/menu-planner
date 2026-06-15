@@ -1,0 +1,150 @@
+.meal-history-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.meal-history-card {
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.meal-history-card .card-header {
+  font-weight: bold;
+  background-color: #f0f2f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.meal-entry {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.meal-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.meal-item:hover {
+  transform: scale(1.02);
+}
+
+.meal-image {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-bottom: 0.5rem;
+}
+
+.date-filter-form {
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.date-filter-form .form-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* .date-filter-form .form-control {
+  max-width: 180px;
+} */
+
+.date-filter-form .btn {
+  white-space: nowrap;
+}
+
+.daily-plan-scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 0.5rem;
+  scroll-behavior: smooth;
+}
+
+.scroll-wrapper {
+  display: inline-flex;
+  gap: 1rem;
+}
+
+.scroll-wrapper>div {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: #fefefe;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.daily-plan-card {
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  white-space: normal;
+  flex-shrink: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.daily-plan-card h6 {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.meal-text {
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+.scroll-button.left {
+  left: -12px;
+}
+
+.scroll-button.right {
+  right: -12px;
+}
+
+.scroll-button:hover {
+  background-color: #e9ecef;
+}
+
+@media (max-width: 576px) {
+  .meal-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .meal-image {
+    width: 100%;
+    height: auto;
+  }
+}

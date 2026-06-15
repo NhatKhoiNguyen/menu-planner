@@ -1,0 +1,95 @@
+.home-page {
+    background: #fff;
+    min-height: 100vh;
+    animation: fadeIn 1s ease;
+    padding-top: 0px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hero-banner {
+    background: url('~/public/banner1.png') center/cover no-repeat;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    animation: slideDown 1s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.hero-text {
+    background-color: rgba(255, 140, 0, 0.75);
+    padding: 1.5rem 2rem;
+    border-radius: 1rem;
+    color: white;
+    max-width: 600px;
+    animation: zoomIn 1.2s ease-in;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.hero-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.home-form-section {
+    padding: 2rem 3rem;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+/* Tối ưu hiển thị cho màn hình lớn */
+@media (min-width: 1400px) {
+    .home-form-section {
+        padding: 2rem 6rem;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

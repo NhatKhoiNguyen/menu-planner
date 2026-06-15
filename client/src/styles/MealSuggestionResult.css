@@ -1,0 +1,221 @@
+/* Layout tổng thể */
+.meal-suggestion-wrapper {
+    overflow-x: auto;
+}
+
+.meal-days-scroll-container {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0 1rem 1rem 1rem;
+    padding-right: 2rem;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 1rem;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.meal-days-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.meal-days-scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.meal-days-scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+.day-column {
+    flex: 0 0 auto;
+    min-width: 250px;
+    max-width: 250px;
+    scroll-snap-align: start;
+    overflow: hidden;
+}
+
+/* Meal card */
+.meal-card {
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.meal-card .meal-text-wrapper {
+    height: 75px;
+}
+
+.meal-card .fixed-btn {
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    font-size: 0.8em;
+}
+
+.button-wrapper {
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+@media (max-width: 400px) {
+    .button-wrapper {
+        flex-direction: column;
+    }
+}
+
+.scrollable-replacement-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.replacement-meal-card {
+    padding: 10px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.replacement-meal-card:hover {
+    background-color: #e2e6ea;
+}
+
+/* Bữa ăn */
+.meal-row {
+    margin-bottom: 0.5rem;
+}
+
+/* Divider giữa các bữa */
+.meal-divider {
+    position: relative;
+    height: 24px;
+    margin: 0 18px;
+    padding: 0;
+}
+
+.meal-divider hr {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px dotted #ccc;
+    margin: 0;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+hr.hidden-line {
+    opacity: 0;
+}
+
+hr.visible-line {
+    opacity: 1;
+}
+
+hr.final-divider {
+    border-top: 2px solid #333;
+    margin: 12px 0 6px 0;
+}
+
+/* Button toggle snack */
+.toggle-snack-btn {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 28px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 0;
+    line-height: 1;
+}
+
+/* Bữa phụ xổ xuống */
+.snack-meal-row {
+    margin-left: 0.75rem;
+    margin-top: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.meal-options {
+    display: flex;
+    flex-direction: row;
+    /* Hiển thị các món theo chiều ngang */
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0rem;
+    padding-bottom: 0.5rem;
+    padding-top: 0.25rem;
+    white-space: nowrap;
+    /* Tránh cắt chữ khi cuộn */
+    max-width: 100%;
+    scroll-behavior: smooth;
+}
+
+.meal-options::-webkit-scrollbar {
+    height: 6px;
+}
+
+.meal-options::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.meal-options::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.option-card {
+    min-width: 160px;
+    /* Chiều rộng tối thiểu của mỗi món */
+    max-width: 200px;
+    flex-shrink: 0;
+    /* Không bị co khi không đủ chỗ */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #f8f9fa;
+}
+
+.option-card:hover {
+    background-color: #e7f1ff;
+}
+
+/* CSSTransition slide effect */
+.slide-snack-enter {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.slide-snack-enter-active {
+    max-height: 100px;
+    opacity: 1;
+    transition: max-height 300ms ease-in, opacity 300ms ease-in;
+}
+
+.slide-snack-exit {
+    max-height: 100px;
+    opacity: 1;
+}
+
+.slide-snack-exit-active {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease-out, opacity 300ms ease-out;
+}

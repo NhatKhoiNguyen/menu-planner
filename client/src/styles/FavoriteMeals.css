@@ -1,0 +1,16 @@
+.favorite-meals-container {
+  padding: 20px;
+}
+
+.meal-card {
+  transition: transform 0.2s;
+}
+
+.meal-card:hover {
+  transform: scale(1.02);
+}
+
+.meal-card-img {
+  height: 150px;
+  object-fit: cover;
+}

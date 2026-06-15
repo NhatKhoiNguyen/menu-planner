@@ -1,0 +1,70 @@
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.meal-table {
+    min-width: 900px;
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.meal-table th,
+.meal-table td {
+    padding: 8px 12px;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.meal-table th {
+    background-color: #ff914d;
+    color: white;
+}
+
+.meal-table td:nth-child(1) {
+    /* ID */
+    width: 160px;
+}
+
+.meal-table td:nth-child(2) {
+    /* Tên món */
+    width: 200px;
+    text-align: left;
+}
+
+.meal-table td:nth-child(3),
+/* Calo */
+.meal-table td:nth-child(4) {
+    /* Chi phí */
+    width: 100px;
+}
+
+.meal-table td:nth-child(5) {
+    /* Loại món */
+    width: 120px;
+}
+
+.meal-table td:nth-child(6) {
+    /* Hành động */
+    width: 180px;
+}
+
+.meal-table tr:hover {
+    background-color: #ffe0c2;
+}
+
+.pagination-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.pagination-container .pagination {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 4px;
+    padding: 0.5rem;
+}

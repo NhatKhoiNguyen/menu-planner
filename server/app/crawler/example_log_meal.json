@@ -1,0 +1,708 @@
+{
+    "dish_id": [
+        422,
+        390,
+        1460,
+        1537
+    ],
+    "foodName": [
+        "green salad",
+        "grilled bacon",
+        "baked potatoes",
+        "tomato"
+    ],
+    "imageId": 1913501,
+    "is_combo": true,
+    "recipe": [
+        {
+            "id": 12,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 50,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 50,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "lettuce",
+            "unit": "g",
+            "weight": 50
+        },
+        {
+            "id": 112,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 163,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 163,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "tomato",
+            "unit": "g",
+            "weight": 163
+        },
+        {
+            "id": 169,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 25,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 25,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "cucumber",
+            "unit": "g",
+            "weight": 25
+        },
+        {
+            "id": 427,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 10,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 10,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "onion",
+            "unit": "g",
+            "weight": 10
+        },
+        {
+            "id": 121,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 2,
+                    "name": "milliliters",
+                    "quantity": 5,
+                    "short": "ml",
+                    "state": "liquid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 10,
+                    "id": 1,
+                    "name": "tablespoons",
+                    "quantity": 0.5,
+                    "type": "cooking_measures"
+                }
+            },
+            "name": "olive oil",
+            "unit": "ml",
+            "weight": 5
+        },
+        {
+            "id": 45,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 1.5,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 5,
+                    "id": 5,
+                    "name": "teaspoons",
+                    "quantity": 0.3,
+                    "type": "cooking_measures"
+                }
+            },
+            "name": "salt",
+            "unit": "g",
+            "weight": 1.5
+        },
+        {
+            "id": 487,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 40,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 40,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "bacon",
+            "unit": "g",
+            "weight": 40
+        },
+        {
+            "id": 204,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 200,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 200,
+                    "id": 14,
+                    "name": "medium size units",
+                    "quantity": 1,
+                    "type": "cooking_measures"
+                }
+            },
+            "name": "potato",
+            "unit": "g",
+            "weight": 200
+        },
+        {
+            "id": 562,
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 2,
+                    "name": "milliliters",
+                    "quantity": 8,
+                    "short": "ml",
+                    "state": "liquid",
+                    "type": "weight"
+                },
+                "preferred": {
+                    "grams_conversion": 10,
+                    "id": 1,
+                    "name": "tablespoons",
+                    "quantity": 0.8,
+                    "type": "cooking_measures"
+                }
+            },
+            "name": "oil",
+            "unit": "ml",
+            "weight": 8
+        }
+    ],
+    "recipe_per_item": [
+        {
+            "dish_id": 422,
+            "foodGroups": [
+                {
+                    "id": 8,
+                    "name": "vegetables"
+                }
+            ],
+            "food_item_position": 1,
+            "hasRecipe": true,
+            "levels": {
+                "oil": "medium",
+                "salt": "medium",
+                "sugar": "medium"
+            },
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 130.5,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "portion": {
+                    "grams_conversion": 130.5,
+                    "quantity": 1,
+                    "type": "portions"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 130.5,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "green salad",
+            "recipe": [
+                {
+                    "id": 12,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 50,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 50,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        }
+                    },
+                    "name": "lettuce",
+                    "unit": "g",
+                    "weight": 50
+                },
+                {
+                    "id": 112,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 40,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 40,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        }
+                    },
+                    "name": "tomato",
+                    "unit": "g",
+                    "weight": 40
+                },
+                {
+                    "id": 169,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 25,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 25,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        }
+                    },
+                    "name": "cucumber",
+                    "unit": "g",
+                    "weight": 25
+                },
+                {
+                    "id": 427,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 10,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 10,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        }
+                    },
+                    "name": "onion",
+                    "unit": "g",
+                    "weight": 10
+                },
+                {
+                    "id": 121,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 2,
+                            "name": "milliliters",
+                            "quantity": 5,
+                            "short": "ml",
+                            "state": "liquid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 10,
+                            "id": 1,
+                            "name": "tablespoons",
+                            "quantity": 0.5,
+                            "type": "cooking_measures"
+                        }
+                    },
+                    "name": "olive oil",
+                    "unit": "ml",
+                    "weight": 5
+                },
+                {
+                    "id": 45,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 0.5,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 5,
+                            "id": 5,
+                            "name": "teaspoons",
+                            "quantity": 0.1,
+                            "type": "cooking_measures"
+                        }
+                    },
+                    "name": "salt",
+                    "unit": "g",
+                    "weight": 0.5
+                }
+            ],
+            "serving_size": 130.5,
+            "unit": "g"
+        },
+        {
+            "dish_id": 390,
+            "foodGroups": [
+                {
+                    "id": 1,
+                    "name": "meat"
+                }
+            ],
+            "food_item_position": 2,
+            "hasRecipe": true,
+            "levels": {
+                "oil": "medium",
+                "salt": "medium",
+                "sugar": "medium"
+            },
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 40,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "portion": {
+                    "grams_conversion": 40,
+                    "quantity": 1,
+                    "type": "portions"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 40,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "grilled bacon",
+            "recipe": [
+                {
+                    "id": 487,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 40,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 40,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        }
+                    },
+                    "name": "bacon",
+                    "unit": "g",
+                    "weight": 40
+                }
+            ],
+            "serving_size": 40,
+            "unit": "g"
+        },
+        {
+            "dish_id": 1460,
+            "foodGroups": [
+                {
+                    "id": 20,
+                    "name": "tubers and derivatives"
+                }
+            ],
+            "food_item_position": 3,
+            "hasRecipe": true,
+            "levels": {
+                "oil": "medium",
+                "salt": "medium",
+                "sugar": "medium"
+            },
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 209,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "portion": {
+                    "grams_conversion": 209,
+                    "quantity": 1,
+                    "type": "portions"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 209,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "baked potatoes",
+            "recipe": [
+                {
+                    "id": 204,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 200,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 200,
+                            "id": 14,
+                            "name": "medium size units",
+                            "quantity": 1,
+                            "type": "cooking_measures"
+                        }
+                    },
+                    "name": "potato",
+                    "unit": "g",
+                    "weight": 200
+                },
+                {
+                    "id": 562,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 2,
+                            "name": "milliliters",
+                            "quantity": 8,
+                            "short": "ml",
+                            "state": "liquid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 10,
+                            "id": 1,
+                            "name": "tablespoons",
+                            "quantity": 0.8,
+                            "type": "cooking_measures"
+                        }
+                    },
+                    "name": "oil",
+                    "unit": "ml",
+                    "weight": 8
+                },
+                {
+                    "id": 45,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 1,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 5,
+                            "id": 5,
+                            "name": "teaspoons",
+                            "quantity": 0.2,
+                            "type": "cooking_measures"
+                        }
+                    },
+                    "name": "salt",
+                    "unit": "g",
+                    "weight": 1
+                }
+            ],
+            "serving_size": 209,
+            "unit": "g"
+        },
+        {
+            "dish_id": 1537,
+            "foodGroups": [
+                {
+                    "id": 8,
+                    "name": "vegetables"
+                }
+            ],
+            "food_item_position": 4,
+            "hasRecipe": true,
+            "levels": {
+                "oil": "medium",
+                "salt": "medium",
+                "sugar": "medium"
+            },
+            "measure": {
+                "metric": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 123,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                },
+                "portion": {
+                    "grams_conversion": 123,
+                    "quantity": 1,
+                    "type": "portions"
+                },
+                "preferred": {
+                    "grams_conversion": 1,
+                    "id": 1,
+                    "name": "grams",
+                    "quantity": 123,
+                    "short": "g",
+                    "state": "solid",
+                    "type": "weight"
+                }
+            },
+            "name": "tomato",
+            "recipe": [
+                {
+                    "id": 112,
+                    "measure": {
+                        "metric": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 123,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        },
+                        "preferred": {
+                            "grams_conversion": 1,
+                            "id": 1,
+                            "name": "grams",
+                            "quantity": 123,
+                            "short": "g",
+                            "state": "solid",
+                            "type": "weight"
+                        }
+                    },
+                    "name": "tomato",
+                    "unit": "g",
+                    "weight": 123
+                }
+            ],
+            "serving_size": 123,
+            "unit": "g"
+        }
+    ],
+    "serving_size": 502.5,
+    "source": null
+}

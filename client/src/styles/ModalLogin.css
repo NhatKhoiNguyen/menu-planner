@@ -1,0 +1,58 @@
+.login-modal-body {
+  padding: 20px !important;
+  background-color: #f9f9f9 !important;
+}
+
+.login-modal-header {
+  background-color: #FFA500 !important;
+  color: white !important;
+  border-bottom: none !important;
+}
+
+.login-modal-title {
+  font-weight: bold !important;
+}
+
+.login-modal-footer {
+  background-color: #f1f1f1 !important;
+  border-top: none !important;
+}
+
+form .login-form-group {
+  margin-bottom: 15px;
+}
+
+form .login-form-label {
+  font-weight: 500;
+  color: #333;
+}
+
+form .login-form-control {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s;
+}
+
+form .login-form-control:focus {
+  border-color: #FFA500;
+  box-shadow: none;
+}
+
+.login-modal-footer button.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.login-modal-footer button.btn-secondary:hover {
+  background-color: #b7b7b7;
+}
+
+.login-modal-link .btn-link {
+  padding: 0;
+  font-size: 0.95rem;
+  color: #FFA500;
+}
+
+.login-modal-link .btn-link:hover {
+  color: #ff8c00;
+}

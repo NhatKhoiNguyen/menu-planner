@@ -1,0 +1,58 @@
+.register-modal-body {
+  padding: 20px !important;
+  background-color: #f9f9f9 !important;
+}
+
+.register-modal-header {
+  background-color: #198754 !important;
+  color: white !important;
+  border-bottom: none !important;
+}
+
+.register-modal-title {
+  font-weight: bold !important;
+}
+
+.register-modal-footer {
+  background-color: #f1f1f1 !important;
+  border-top: none !important;
+}
+
+form .register-form-group {
+  margin-bottom: 15px;
+}
+
+form .register-form-label {
+  font-weight: 500;
+  color: #333;
+}
+
+form .register-form-control {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s;
+}
+
+form .register-form-control:focus {
+  border-color: #198754;
+  box-shadow: none;
+}
+
+.register-modal-footer button.btn-success {
+  background-color: #198754;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.register-modal-footer button.btn-success:hover {
+  background-color: #157347;
+}
+
+.register-modal-footer button.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.register-modal-footer button.btn-secondary:hover {
+  background-color: #b7b7b7;
+}

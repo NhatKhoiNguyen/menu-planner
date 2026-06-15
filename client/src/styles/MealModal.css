@@ -1,0 +1,8 @@
+.custom-meal-modal .modal-body {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.custom-meal-modal .modal-dialog {
+  max-width: 900px;
+}

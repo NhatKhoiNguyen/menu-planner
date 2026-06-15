@@ -1,0 +1,65 @@
+.calorie-modal .modal-dialog {
+    max-width: 600px;
+}
+
+.calorie-modal .modal-content {
+    animation: fadeIn 0.4s ease-in-out;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #fff8f0;
+    box-shadow: 0 6px 20px rgba(242, 92, 5, 0.3);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-form {
+    padding: 5px;
+}
+
+.modal-form .form-group label {
+    font-weight: 500;
+    color: #F25C05;
+}
+
+.modal-form .form-control,
+.modal-form .form-select {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-form .form-control:focus,
+.modal-form .form-select:focus {
+    border-color: #FFA500;
+    box-shadow: 0 0 6px rgba(255, 165, 0, 0.5);
+}
+
+.modal-footer button {
+    min-width: 100px;
+    font-weight: 500;
+}
+
+.modal-footer .btn-primary {
+    background-color: #FFA500;
+    border-color: #FFA500;
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: #F25C05;
+    border-color: #F25C05;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #eee;
+    color: #333;
+}

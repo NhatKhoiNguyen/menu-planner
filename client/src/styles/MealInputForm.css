@@ -1,0 +1,70 @@
+.meal-form-wrapper {
+    background: #fff3e0;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.meal-form-wrapper:hover {
+    box-shadow: 0 6px 30px rgba(255, 87, 34, 0.3);
+}
+
+.meal-form-wrapper label {
+    font-weight: 600;
+    color: #E65100;
+}
+
+.meal-form-wrapper input,
+.meal-form-wrapper select {
+    border: 2px solid #FFB300;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    transition: 0.2s;
+}
+
+.meal-form-wrapper input:focus,
+.meal-form-wrapper select:focus {
+    border-color: #F57C00;
+    box-shadow: 0 0 0 0.2rem rgba(255, 138, 101, 0.3);
+    outline: none;
+}
+
+.meal-form-wrapper button {
+    background-color: #F25C05;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.meal-form-wrapper button:hover {
+    background-color: #E65100;
+}
+
+.meal-form-wrapper .form-check-input:checked {
+    background-color: #FFA500;
+    border-color: #F25C05;
+}
+
+.meal-form-wrapper .form-check-label {
+    color: #E65100;
+    font-weight: 500;
+}
+
+.calorie-suggestion-link {
+    color: #F25C05;
+    cursor: pointer;
+    font-style: italic;
+    font-weight: 500;
+    margin-top: 5px;
+    transition: color 0.3s ease;
+    text-decoration: underline dotted;
+}
+
+.calorie-suggestion-link:hover {
+    color: #FFA500;
+    text-decoration: underline solid;
+}
