@@ -1,4 +1,5 @@
 # scripts/cluster_users_by_ingredients.py
+import os
 from pymongo import MongoClient
 from bson import ObjectId
 import numpy as np
@@ -33,7 +34,7 @@ def extract_meal_ids(plan):
     return list(meal_ids)
 
 def main():
-    client = MongoClient("mongodb://localhost:27017/")
+    client = MongoClient(os.getenv("MONGO_URI"))
     db = client["meal_planner_db"]
     meals_collection = db["meals"]
     histories_collection = db["meal_histories"]

@@ -1,10 +1,12 @@
 # scripts/generate_meal_embeddings.py
+import os
+
 from pymongo import MongoClient
 from sentence_transformers import SentenceTransformer
 import numpy as np
 import bson
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["meal_planner_db"]
 meals = db["meals"]
 

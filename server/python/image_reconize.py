@@ -53,7 +53,7 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Kết nối MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["meal_planner_db"]
 meals_collection = db["meals"]
 

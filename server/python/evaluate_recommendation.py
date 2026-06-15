@@ -1,3 +1,5 @@
+import os
+
 from pymongo import MongoClient
 from bson import ObjectId
 from collections import defaultdict
@@ -40,7 +42,7 @@ def calculate_coverage(recommended_all_ids, total_meal_count):
     return round(len(recommended_all_ids) / total_meal_count, 4)
 
 ### Kết nối DB
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["meal_planner_db"]
 
 meal_histories = db["meal_histories"]
