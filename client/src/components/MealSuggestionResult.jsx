@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Form } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { Button } from "react-bootstrap";
 import { CSSTransition } from "react-transition-group";
 import "../styles/MealSuggestionResult.css";
 import { UserContext } from "~/contexts/UserContext";

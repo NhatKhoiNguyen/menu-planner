@@ -2,10 +2,6 @@ import React, { useState, useContext } from "react";
 import {
   Button,
   Dropdown,
-  Navbar,
-  Nav,
-  Container,
-  NavDropdown,
 } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import "~/styles/Header.css";

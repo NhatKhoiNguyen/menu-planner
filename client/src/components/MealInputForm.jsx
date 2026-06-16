@@ -4,7 +4,6 @@ import "~/styles/MealInputForm.css";
 import CalorieSuggestionModal from "./CalorieSuggestionModal";
 import MealSuggestionResult from "./MealSuggestionResult";
 import { UserContext } from "../contexts/UserContext";
-import { generateMealPlan } from "~/data/generateMealPlan";
 
 export default function MealInputForm() {
   const { user } = useContext(UserContext);

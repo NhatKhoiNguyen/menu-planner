@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Table, Button, Spinner, Modal } from "react-bootstrap";
+import { Container, Table, Button, Spinner } from "react-bootstrap";
 import MealModal from "./MealModal";
 
 const MealApproval = () => {
