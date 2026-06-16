@@ -52,7 +52,7 @@ export const UserProvider = ({ children }) => {
         localStorage.removeItem("user");
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [token]);
 
   return (
     <UserContext.Provider value={{ user, setUser, updateUser, loading }}>

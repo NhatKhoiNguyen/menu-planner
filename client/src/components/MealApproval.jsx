@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Table, Button, Spinner } from "react-bootstrap";
 import MealModal from "./MealModal";
@@ -11,26 +11,26 @@ const MealApproval = () => {
 
   const token = localStorage.getItem("token");
 
-  const fetchPendingMeals = async () => {
+  const fetchPendingMeals = useCallback(async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/admin/pending-meals`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
-      console.log("Pending meals:", res.data);
+
       setPendingMeals(res.data);
     } catch (error) {
       console.error("Lỗi khi tải món chờ duyệt:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchPendingMeals();
-  }, []);
+  }, [fetchPendingMeals]);
 
   const handleApprove = async (meal) => {
     const id = meal._id?.toString();
@@ -40,7 +40,7 @@ const MealApproval = () => {
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       setPendingMeals((prev) => prev.filter((meal) => meal._id !== id));
     } catch (error) {
@@ -50,9 +50,12 @@ const MealApproval = () => {
 
   const handleReject = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/admin/reject-meal/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/admin/reject-meal/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       setPendingMeals((prev) => prev.filter((meal) => meal._id !== id));
     } catch (error) {
       console.error("Từ chối món thất bại:", error);

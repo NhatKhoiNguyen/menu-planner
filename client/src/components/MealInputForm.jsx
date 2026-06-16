@@ -16,7 +16,7 @@ export default function MealInputForm() {
   const [mainMeals] = useState(["Sáng", "Trưa", "Tối"]);
   const [allergens, setAllergens] = useState([]);
   const [finalSuggestionData, setFinalSuggestionData] = useState(null);
-  const [allowFallback, setAllowFallback] = useState(false);
+  const [allowFallback,] = useState(false);
   const [userInput, setUserInput] = useState(null);
 
   const isLoggedIn = !!user;

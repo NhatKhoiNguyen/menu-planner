@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
-import { UserContext } from "~/contexts/UserContext";
+import React from "react";
 import MealInputForm from '~/components/MealInputForm';
 import '~/styles/Home.css';
 
 export default function Home() {
-  const { user, setUser } = useContext(UserContext);
+  
   
   const handleFormSubmit = (data) => {
     console.log('Dữ liệu form:', data);

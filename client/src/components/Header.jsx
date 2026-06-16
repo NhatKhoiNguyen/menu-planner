@@ -96,7 +96,7 @@ export default function Header() {
                     Đóng góp món ăn
                   </Dropdown.Item>
                 )}
-              {user.role == "admin" && location.pathname !== "/admin" && (
+              {user.role === "admin" && location.pathname !== "/admin" && (
                 <Dropdown.Item onClick={() => navigate("/admin")}>
                   Quản lý
                 </Dropdown.Item>

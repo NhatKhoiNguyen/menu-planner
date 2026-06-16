@@ -11,7 +11,6 @@ import {
 import axios from "axios";
 import MealDetailModal from "~/components/MealDetailModal";
 import MealInstructionModal from "../../components/MealInstructionModal";
-import { UserContext } from "../../contexts/UserContext";
 import "../../styles/Search.css";
 
 export default function Search() {

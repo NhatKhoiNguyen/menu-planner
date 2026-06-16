@@ -12,7 +12,6 @@ import {
 } from "react-bootstrap";
 import DatePicker, { registerLocale } from "react-datepicker";
 import vi from "date-fns/locale/vi";
-import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import { UserContext } from "../../contexts/UserContext";
 import "../../styles/MealHistory.css";

@@ -4,8 +4,7 @@ import {
   Button,
   InputGroup,
   Form,
-  Pagination,
-  Modal,
+  Pagination
 } from "react-bootstrap";
 import MealModal from "./MealModal";
 import MealDetailModal from "./MealDetailModal";

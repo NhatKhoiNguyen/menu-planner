@@ -12,7 +12,7 @@ const MealDetailModal = ({
   hideFavoriteButton,
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [, setShowLoginModal] = useState(false); 
 
   useEffect(() => {
     const checkIfFavorite = async () => {

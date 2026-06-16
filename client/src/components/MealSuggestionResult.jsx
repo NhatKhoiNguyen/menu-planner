@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { CSSTransition } from "react-transition-group";
 import "../styles/MealSuggestionResult.css";
 import { UserContext } from "~/contexts/UserContext";
-import mockMeals from "~/data/mockMeals";
 import ModalLogin from "./ModalLogin";
 import MealDetailModal from "./MealDetailModal";
 import MealInstructionModal from "./MealInstructionModal";
@@ -46,7 +44,6 @@ const MealCard = React.forwardRef(
         params.append("max_cal", calMax);
       }
       if (typeof priceLimit === "number") {
-        const priceMax = Math.ceil(priceLimit * 1.1);
         params.append("max_price", priceLimit);
       }
       if (type) {
@@ -275,16 +272,7 @@ const MealCard = React.forwardRef(
   }
 );
 
-const getRandomMeal = (type) => {
-  const category = type === "snack" ? "snack" : "main";
-  const options = mockMeals.filter((meal) => meal.type === category);
-  return options[Math.floor(Math.random() * options.length)];
-};
 
-const getMealOptions = (type) => {
-  const category = type === "snack" ? "snack" : "main";
-  return mockMeals.filter((meal) => meal.type === category);
-};
 
 const MealSuggestionResult = ({
   suggestionPlan = null,
@@ -293,7 +281,7 @@ const MealSuggestionResult = ({
   allergens,
 }) => {
   const { user } = useContext(UserContext);
-  const { numDays = 2, calories, budget } = userInput;
+  const { calories, budget } = userInput;
   const [mealPlan, setMealPlan] = useState([]);
   const [dailySnacks, setDailySnacks] = useState([]);
   const [showOptions, setShowOptions] = useState({}); // track which card is showing options
@@ -303,16 +291,13 @@ const MealSuggestionResult = ({
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const navigate = useNavigate();
 
   const openMealDetail = (meal) => {
     setSelectedMeal(meal);
     setShowDetailModal(true);
   };
 
-  const closeMealDetail = () => {
-    setShowDetailModal(false);
-  };
+
 
   const handleLoginSuccess = (user) => {
     setShowLoginModal(false);
@@ -423,17 +408,17 @@ const MealSuggestionResult = ({
 
       const mealRatios = { Sáng: 0.2, Trưa: 0.4, Tối: 0.4 };
 
-      let totalCaloriesUsed = 0;
-      let totalCostUsed = 0;
+      // let totalCaloriesUsed = 0;
+      // let totalCostUsed = 0;
 
-      for (const dayMeals of suggestionPlan) {
-        for (const mealType of Object.keys(dayMeals)) {
-          const main = dayMeals[mealType]?.main;
-          const snack = dayMeals[mealType]?.snack;
-          totalCaloriesUsed += (main?.calories ?? 0) + (snack?.calories ?? 0);
-          totalCostUsed += (main?.price ?? 0) + (snack?.price ?? 0);
-        }
-      }
+      // for (const dayMeals of suggestionPlan) {
+      //   for (const mealType of Object.keys(dayMeals)) {
+      //     const main = dayMeals[mealType]?.main;
+      //     const snack = dayMeals[mealType]?.snack;
+      //     totalCaloriesUsed += (main?.calories ?? 0) + (snack?.calories ?? 0);
+      //     totalCostUsed += (main?.price ?? 0) + (snack?.price ?? 0);
+      //   }
+      // }
 
       const updatedPlan = suggestionPlan.map((dayMeals) => {
         const updatedDayMeals = { ...dayMeals };

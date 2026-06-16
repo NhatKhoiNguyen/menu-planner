@@ -11,7 +11,9 @@ function PrivateRoute({ children, roles }) {
     return <Navigate to="/" replace />;
   }
 
-  if (!user || roles && !roles.includes(user.role)) {
+  const unauthorized = !user || (roles && !roles.includes(user.role));
+
+  if (unauthorized) {
     return <Navigate to="/" replace />;
   }
 

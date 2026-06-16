@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Form, Container, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import {
@@ -70,7 +70,7 @@ const Statistics = () => {
             meal_times: selectedMealKeys,
           },
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       setTopStats(res.data.top20 || []);
@@ -120,15 +120,18 @@ const Statistics = () => {
         titles: selectedTitles.join(","),
       });
 
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/stats/trend`, {
-        params: {
-          start_date: formatDateVN(startDate),
-          end_date: formatDateVN(endDate),
-          meal_times: selectedMealKeys,
-          titles: selectedTitles.join(","),
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/stats/trend`,
+        {
+          params: {
+            start_date: formatDateVN(startDate),
+            end_date: formatDateVN(endDate),
+            meal_times: selectedMealKeys,
+            titles: selectedTitles.join(","),
+          },
+          headers: { Authorization: `Bearer ${token}` },
         },
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      );
 
       console.log("Trend data response:", res.data);
 
@@ -138,23 +141,24 @@ const Statistics = () => {
     }
   };
 
-  const fetchAvailableMeals = async () => {
+  const fetchAvailableMeals = useCallback(async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/stats/trend/meals`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
+
       setAvailableMeals(res.data || []);
     } catch (err) {
       console.error("Lỗi lấy danh sách món:", err);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchAvailableMeals();
-  }, []);
+  }, [fetchAvailableMeals]);
 
   const transformChartData = (data) => {
     return data.map((item) => ({
@@ -210,8 +214,8 @@ const Statistics = () => {
                   meal === "breakfast"
                     ? "Sáng"
                     : meal === "lunch"
-                    ? "Trưa"
-                    : "Tối"
+                      ? "Trưa"
+                      : "Tối"
                 }
                 checked={selectedMeals[meal]}
                 onChange={() => handleMealToggle(meal)}
@@ -238,7 +242,7 @@ const Statistics = () => {
           >
             {availableMeals
               .filter((meal) =>
-                meal.title.toLowerCase().includes(searchTerm.toLowerCase())
+                meal.title.toLowerCase().includes(searchTerm.toLowerCase()),
               )
               .map((meal) => (
                 <Form.Check
@@ -250,7 +254,7 @@ const Statistics = () => {
                     setSelectedTrendMeals((prev) =>
                       e.target.checked
                         ? [...prev, meal.id]
-                        : prev.filter((id) => id !== meal.id)
+                        : prev.filter((id) => id !== meal.id),
                     );
                   }}
                 />

@@ -20,7 +20,7 @@ export function generateMealPlan({
   const allergenKeywords = {
     Trứng: ["trứng"],
     "Hải sản": ["tôm", "mực", "cá", "hải sản"],
-    "Sữa": ["sữa", "phô mai", "kem", "bơ"],
+    Sữa: ["sữa", "phô mai", "kem", "bơ"],
     "Đậu phộng": ["đậu phộng", "bơ đậu phộng"],
     "Đậu nành": ["đậu nành", "đậu hũ", "nước tương"],
     "Lúa mì": ["bột mì", "mì", "bánh mì", "lúa mì"],
@@ -36,8 +36,8 @@ export function generateMealPlan({
       !meal.ingredients.some((ingredient) => {
         return allergens.some((allergen) =>
           (allergenKeywords[allergen] || []).some((keyword) =>
-            ingredient.toLowerCase().includes(keyword)
-          )
+            ingredient.toLowerCase().includes(keyword),
+          ),
         );
       });
 
@@ -90,7 +90,6 @@ export function generateMealPlan({
       const predictedDayCost = dayCost + mainPrice + snackPrice;
       const predictedTotalCost = totalCost + mainPrice + snackPrice;
 
-      const predictedDayCals = dayCals + mainCalories + snackCalories;
       const predictedTotalCals = totalCals + mainCalories + snackCalories;
 
       // Nếu vượt giới hạn theo kiểu budget
