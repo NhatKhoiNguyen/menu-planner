@@ -2,7 +2,6 @@
 import os
 
 from pymongo import MongoClient
-from sentence_transformers import SentenceTransformer
 import numpy as np
 import bson
 
@@ -10,7 +9,6 @@ client = MongoClient(os.getenv("MONGO_URI"))
 db = client["meal_planner_db"]
 meals = db["meals"]
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def get_meal_text(meal):
     title = meal.get("title", "")

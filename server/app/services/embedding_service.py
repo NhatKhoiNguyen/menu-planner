@@ -1,4 +1,4 @@
-from sentence_transformers import SentenceTransformer
+from app.utils.model_loader import get_model
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from unidecode import unidecode
@@ -30,9 +30,6 @@ import json
 #         print(f"✅ Updated: {meal['name']}")
 
 
-# Khởi tạo model (chỉ nên load 1 lần trong app)
-model = SentenceTransformer("all-MiniLM-L6-v2")
-
 STOP_INGREDIENTS = {
     "muối", "đường", "nước", "dầu", "tiêu", "hành", "tỏi", "gừng",
     "ớt", "bột ngọt", "nước mắm", "bột nêm", "bột mì", "bột năng"
@@ -44,6 +41,7 @@ def normalize_text(text):
     return "".join(c for c in text if c.isalnum() or c.isspace())
 
 def get_meal_embedding_ingredients(meal):
+    model = get_model()
     tags = [normalize_text(tag) for tag in meal.get("tags", [])]
     raw_ingredients = [i.get("name", "") for i in meal.get("ingredients", [])]
 

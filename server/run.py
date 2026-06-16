@@ -6,9 +6,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from scripts.cluster_users import main as cluster_users
 
 app = create_app()
-scheduler = BackgroundScheduler()
-scheduler.add_job(cluster_users, 'interval', hours=6)
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(cluster_users, 'interval', hours=6)
+# scheduler.start()
 
 if __name__ == "__main__":
     app.run(

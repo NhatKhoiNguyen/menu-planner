@@ -8,9 +8,7 @@ import os
 import json
 import re
 from copy import deepcopy
-from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/api/admin")
 

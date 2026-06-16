@@ -18,13 +18,11 @@ import json
 from datetime import datetime
 from collections import Counter
 import logging
-from sentence_transformers import SentenceTransformer
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 meals_bp = Blueprint("meals", __name__, url_prefix="/api/meals")
-model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 @meals_bp.route("/", methods=["GET"])
