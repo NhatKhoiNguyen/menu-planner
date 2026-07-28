@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Table, Button, InputGroup, Form, Pagination } from "react-bootstrap";
 import MealModal from "./MealModal";
 import MealDetailModal from "./MealDetailModal";
@@ -7,18 +8,17 @@ import "~/styles/MealManagement.css";
 
 export default function MealManagement() {
   const [meals, setMeals] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
   const [filteredMeals, setFilteredMeals] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [notification, setNotification] = useState("");
-  const mealsPerPage = 30;
+  const mealsPerPage = 20;
 
   // useEffect(() => {
   //   fetch(`${process.env.REACT_APP_API_URL}/api/admin/meals`, {
@@ -33,27 +33,29 @@ export default function MealManagement() {
   //     });
   // }, []);
 
-  const fetchMeals = async (pageNumber = 1) => {
+  const fetchMeals = async (page = 1) => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${pageNumber}&limit=20`,
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${page}&limit=${mealsPerPage}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         },
       );
 
-      setMeals(res.data.meals);
-      setTotalPages(res.data.pagination.totalPages);
+      const data = await res.json();
+
+      setMeals(data.meals);
+      setTotalPages(data.totalPages);
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    fetchMeals(page);
-  }, [page]);
+    fetchMeals(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     const keyword = search.toLowerCase();
@@ -147,7 +149,7 @@ export default function MealManagement() {
             </tr>
           </thead>
           <tbody>
-            {currentMeals.map((meal) => (
+            {filteredMeals.map((meal) => (
               <tr key={meal._id}>
                 <td>{meal._id}</td>
                 <td>{meal.title}</td>
@@ -185,7 +187,7 @@ export default function MealManagement() {
         </Table>
       </div>
 
-      {/* <div className="pagination-container">
+      <div className="pagination-container">
         <Pagination className="justify-content-center">
           {[...Array(totalPages).keys()].map((n) => (
             <Pagination.Item
@@ -197,7 +199,7 @@ export default function MealManagement() {
             </Pagination.Item>
           ))}
         </Pagination>
-      </div> */}
+      </div>
 
       <div>
         <button disabled={page === 1} onClick={() => setPage(page - 1)}>
