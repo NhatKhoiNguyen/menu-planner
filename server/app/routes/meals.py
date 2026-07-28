@@ -27,7 +27,10 @@ meals_bp = Blueprint("meals", __name__, url_prefix="/api/meals")
 
 @meals_bp.route("/", methods=["GET"])
 def get_all_meals():
-    meals_cursor = current_app.db.meals.find()
+    meals_cursor = current_app.db.meals.find(
+        {},
+        {"embedding": 0}  # Exclude the embedding field from the response
+    )
     meals = [Meal(meal).to_dict() for meal in meals_cursor]
     return jsonify(meals), 200
 

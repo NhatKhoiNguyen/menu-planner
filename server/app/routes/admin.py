@@ -9,8 +9,8 @@ import json
 import re
 from copy import deepcopy
 
-
 admin_bp = Blueprint("admin", __name__, url_prefix="/api/admin")
+
 
 def generate_meal_embedding(meal):
     title = meal.get("title", "")
@@ -18,6 +18,7 @@ def generate_meal_embedding(meal):
     ingredients = " ".join(i.get("name", "") for i in meal.get("ingredients", []))
     text = f"{title} {tags} {ingredients}"
     return model.encode(text).tolist()
+
 
 @admin_bp.route("/users", methods=["GET"])
 @admin_required
@@ -39,19 +40,18 @@ def get_users(current_user):
 
     users = []
     for user in users_cursor:
-        users.append({
-            "_id": str(user["_id"]),
-            "username": user.get("username", ""),
-            "email": user.get("email", ""),
-            "is_admin": user.get("is_admin", False),
-        })
+        users.append(
+            {
+                "_id": str(user["_id"]),
+                "username": user.get("username", ""),
+                "email": user.get("email", ""),
+                "is_admin": user.get("is_admin", False),
+            }
+        )
 
-    return jsonify({
-        "users": users,
-        "total": total,
-        "page": page,
-        "pageSize": page_size
-    })
+    return jsonify(
+        {"users": users, "total": total, "page": page, "pageSize": page_size}
+    )
 
 
 @admin_bp.route("/users/<user_id>", methods=["PUT"])
@@ -64,10 +64,7 @@ def update_user(current_user, user_id):
     if "username" in data:
         update_data["username"] = data["username"]
 
-    result = db.users.update_one(
-        {"_id": ObjectId(user_id)},
-        {"$set": update_data}
-    )
+    result = db.users.update_one({"_id": ObjectId(user_id)}, {"$set": update_data})
 
     if result.matched_count == 0:
         return jsonify({"error": "Không tìm thấy người dùng"}), 404
@@ -76,10 +73,7 @@ def update_user(current_user, user_id):
     updated_user["_id"] = str(updated_user["_id"])
     del updated_user["password"]
 
-    return jsonify({
-        "message": "Cập nhật thành công",
-        "updated_user": updated_user
-    })
+    return jsonify({"message": "Cập nhật thành công", "updated_user": updated_user})
 
 
 @admin_bp.route("/users/<user_id>", methods=["DELETE"])
@@ -98,11 +92,35 @@ def delete_user(current_user, user_id):
 @admin_required
 def get_meals(current_user):
     db = current_app.db
-    meals = list(db.meals.find({}))
+
+    page = int(request.args.get("page", 1))
+    limit = int(request.args.get("limit", 20))
+
+    skip = (page - 1) * limit
+
+    total = db.meals.count_documents({})
+                                 
+    meals = list(
+        db.meals.find(
+            {},
+            {"embedding": 0}
+        )
+        .skip(skip)
+        .limit(limit)
+    )
+
     for meal in meals:
         meal["_id"] = str(meal["_id"])
-    return jsonify({"meals": meals})
 
+    return jsonify({
+        "meals": meals,
+        "pagination": {
+            "page": page,
+            "limit": limit,
+            "total": total,
+            "totalPages": (total + limit - 1) // limit
+        }
+    })
 
 
 def normalize_amount_str(amount_str, servings):
@@ -124,6 +142,7 @@ def normalize_amount_str(amount_str, servings):
     except ValueError:
         return amount_str
 
+
 def normalize_ingredients(ingredients, servings):
     if servings <= 1:
         return ingredients
@@ -141,7 +160,16 @@ def create_meal(current_user):
     db = current_app.db
     data = request.json
 
-    required_fields = ["title", "energy", "price", "type", "servings", "tags", "ingredients", "allergens"]
+    required_fields = [
+        "title",
+        "energy",
+        "price",
+        "type",
+        "servings",
+        "tags",
+        "ingredients",
+        "allergens",
+    ]
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Thiếu trường bắt buộc: {field}"}), 400
@@ -150,8 +178,16 @@ def create_meal(current_user):
 
     ingredients = normalize_ingredients(data.get("ingredients", []), servings)
 
-    energy = int(round(data["energy"] / servings)) if isinstance(data["energy"], (int, float)) else 0
-    price = int(round(data["price"] / servings)) if isinstance(data["price"], (int, float)) else 0
+    energy = (
+        int(round(data["energy"] / servings))
+        if isinstance(data["energy"], (int, float))
+        else 0
+    )
+    price = (
+        int(round(data["price"] / servings))
+        if isinstance(data["price"], (int, float))
+        else 0
+    )
 
     meal = {
         "title": data["title"],
@@ -183,14 +219,18 @@ def update_meal(current_user, meal_id):
         object_id = ObjectId(meal_id)
     except:
         return jsonify({"error": "ID không hợp lệ"}), 400
-    
+
     servings = max(data.get("servings", 1), 1)
     ingredients = normalize_ingredients(data.get("ingredients", []), servings)
 
     update_fields = {
         "title": data.get("title"),
-        "energy": int(round(data.get("energy", 0) / servings)) if data.get("energy") else None,
-        "price": int(round(data.get("price", 0) / servings)) if data.get("price") else None,
+        "energy": (
+            int(round(data.get("energy", 0) / servings)) if data.get("energy") else None
+        ),
+        "price": (
+            int(round(data.get("price", 0) / servings)) if data.get("price") else None
+        ),
         "type": data.get("type"),
         "main_image": data.get("main_image", ""),
         "ingredients": ingredients,
@@ -222,8 +262,6 @@ def delete_meal(current_user, meal_id):
     if result.deleted_count == 0:
         return jsonify({"error": "Không tìm thấy món ăn"}), 404
     return jsonify({"message": "Đã xóa món ăn thành công"})
-
-
 
 
 # load_dotenv()
@@ -268,7 +306,7 @@ def delete_meal(current_user, meal_id):
 #             return jsonify({"energy": round(float(value), 2)})
 #         else:
 #             return jsonify({"error": "Không đọc được giá trị calo"}), 500
-            
+
 #     except Exception as e:
 #         print("Gemini error:", str(e))
 #         return jsonify({"error": "Không thể ước tính calories"}), 500
@@ -410,9 +448,16 @@ def delete_meal(current_user, meal_id):
 @admin_required
 def get_pending_meals(current_user):
     pending_meals = list(current_app.db.pending_meals.find())
-    user_ids = list({meal["submittedBy"] for meal in pending_meals if "submittedBy" in meal})
-    users = current_app.db.users.find({"_id": {"$in": [ObjectId(uid) for uid in user_ids]}})
-    user_map = {str(user["_id"]): {"name": user["username"], "email": user["email"]} for user in users}
+    user_ids = list(
+        {meal["submittedBy"] for meal in pending_meals if "submittedBy" in meal}
+    )
+    users = current_app.db.users.find(
+        {"_id": {"$in": [ObjectId(uid) for uid in user_ids]}}
+    )
+    user_map = {
+        str(user["_id"]): {"name": user["username"], "email": user["email"]}
+        for user in users
+    }
     for meal in pending_meals:
         uid = str(meal.get("submittedBy"))
         meal["contributorName"] = user_map.get(uid, {}).get("name", "Không rõ")
@@ -420,6 +465,7 @@ def get_pending_meals(current_user):
         meal["_id"] = str(meal["_id"])
         meal["source"] = "pending"
     return jsonify(pending_meals)
+
 
 @admin_bp.route("/pending-meals/<meal_id>", methods=["PUT"])
 @admin_required
@@ -438,8 +484,7 @@ def update_pending_meal(meal_id, current_user):
     data["servings"] = 1
 
     result = current_app.db.pending_meals.update_one(
-        {"_id": ObjectId(meal_id)},
-        {"$set": data}
+        {"_id": ObjectId(meal_id)}, {"$set": data}
     )
     if result.matched_count == 0:
         return jsonify({"message": "Không tìm thấy món ăn"}), 404
@@ -455,7 +500,7 @@ def approve_meal(meal_id, current_user):
 
     # Chuyển sang collection chính
     new_meal = pending.copy()
-    new_meal.pop("_id") 
+    new_meal.pop("_id")
     new_meal["createdAt"] = datetime.utcnow()
     new_meal["embedding"] = generate_meal_embedding(new_meal)
     current_app.db.meals.insert_one(new_meal)
@@ -464,7 +509,7 @@ def approve_meal(meal_id, current_user):
     current_app.db.pending_meals.delete_one({"_id": ObjectId(meal_id)})
 
     return jsonify({"message": "Duyệt món ăn thành công"})
-    
+
 
 @admin_bp.route("/reject-meal/<meal_id>", methods=["DELETE"])
 @admin_required
@@ -473,7 +518,3 @@ def reject_meal(meal_id, current_user):
     if result.deleted_count == 0:
         return jsonify({"message": "Không tìm thấy món ăn"}), 404
     return jsonify({"message": "Đã từ chối món ăn"}), 200
-
-
-
-

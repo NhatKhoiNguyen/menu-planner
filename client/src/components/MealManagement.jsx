@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Button,
-  InputGroup,
-  Form,
-  Pagination
-} from "react-bootstrap";
+import { Table, Button, InputGroup, Form, Pagination } from "react-bootstrap";
 import MealModal from "./MealModal";
 import MealDetailModal from "./MealDetailModal";
 import MealInstructionModal from "./MealInstructionModal";
@@ -13,6 +7,8 @@ import "~/styles/MealManagement.css";
 
 export default function MealManagement() {
   const [meals, setMeals] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
   const [filteredMeals, setFilteredMeals] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,25 +20,47 @@ export default function MealManagement() {
   const [notification, setNotification] = useState("");
   const mealsPerPage = 30;
 
+  // useEffect(() => {
+  //   fetch(`${process.env.REACT_APP_API_URL}/api/admin/meals`, {
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setMeals(data.meals);
+  //       setFilteredMeals(data.meals);
+  //     });
+  // }, []);
+
+  const fetchMeals = async (pageNumber = 1) => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${pageNumber}&limit=20`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setMeals(res.data.meals);
+      setTotalPages(res.data.pagination.totalPages);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/admin/meals`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setMeals(data.meals);
-        setFilteredMeals(data.meals);
-      });
-  }, []);
+    fetchMeals(page);
+  }, [page]);
 
   useEffect(() => {
     const keyword = search.toLowerCase();
     const results = meals.filter(
       (m) =>
         m.title.toLowerCase().includes(keyword) ||
-        m._id.toLowerCase().includes(keyword)
+        m._id.toLowerCase().includes(keyword),
     );
     setFilteredMeals(results);
     setCurrentPage(1);
@@ -77,7 +95,7 @@ export default function MealManagement() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (res.ok) {
@@ -94,10 +112,10 @@ export default function MealManagement() {
     }
   };
 
-  const indexOfLast = currentPage * mealsPerPage;
-  const indexOfFirst = indexOfLast - mealsPerPage;
-  const currentMeals = filteredMeals.slice(indexOfFirst, indexOfLast);
-  const totalPages = Math.ceil(filteredMeals.length / mealsPerPage);
+  // const indexOfLast = currentPage * mealsPerPage;
+  // const indexOfFirst = indexOfLast - mealsPerPage;
+  // const currentMeals = filteredMeals.slice(indexOfFirst, indexOfLast);
+  // const totalPages = Math.ceil(filteredMeals.length / mealsPerPage);
 
   return (
     <div>
@@ -167,7 +185,7 @@ export default function MealManagement() {
         </Table>
       </div>
 
-      <div className="pagination-container">
+      {/* <div className="pagination-container">
         <Pagination className="justify-content-center">
           {[...Array(totalPages).keys()].map((n) => (
             <Pagination.Item
@@ -179,6 +197,23 @@ export default function MealManagement() {
             </Pagination.Item>
           ))}
         </Pagination>
+      </div> */}
+
+      <div>
+        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous
+        </button>
+
+        <span>
+          Page {page} / {totalPages}
+        </span>
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </button>
       </div>
 
       {showEditModal && (
@@ -188,7 +223,7 @@ export default function MealManagement() {
           meal={selectedMeal}
           onSave={(updated) => {
             setMeals((prev) =>
-              prev.map((m) => (m._id === updated._id ? updated : m))
+              prev.map((m) => (m._id === updated._id ? updated : m)),
             );
             setShowEditModal(false);
           }}
