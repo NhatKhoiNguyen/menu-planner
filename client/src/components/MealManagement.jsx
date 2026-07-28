@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Table, Button, InputGroup, Form, Pagination } from "react-bootstrap";
 import MealModal from "./MealModal";
 import MealDetailModal from "./MealDetailModal";
