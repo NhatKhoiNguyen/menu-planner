@@ -200,23 +200,6 @@ export default function MealManagement() {
         </Pagination>
       </div>
 
-      <div>
-        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-          Previous
-        </button>
-
-        <span>
-          Page {page} / {totalPages}
-        </span>
-
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage(page + 1)}
-        >
-          Next
-        </button>
-      </div>
-
       {showEditModal && (
         <MealModal
           show={showEditModal}
