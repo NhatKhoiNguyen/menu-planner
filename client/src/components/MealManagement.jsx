@@ -46,8 +46,7 @@ export default function MealManagement() {
       const data = await res.json();
 
       setMeals(data.meals);
-      console.log("total = " + data.totalPages);
-      setTotalPages(data.totalPages);
+      setTotalPages(data.pagination.totalPages);
     } catch (err) {
       console.error(err);
     }
