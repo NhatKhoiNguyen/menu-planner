@@ -58,14 +58,18 @@ export default function MealManagement() {
 
   useEffect(() => {
     const keyword = search.toLowerCase();
-    const results = meals.filter(
-      (m) =>
-        m.title.toLowerCase().includes(keyword) ||
-        m._id.toLowerCase().includes(keyword),
+    setFilteredMeals(
+      meals.filter(
+        (m) =>
+          m.title.toLowerCase().includes(keyword) ||
+          m._id.toLowerCase().includes(keyword),
+      ),
     );
-    setFilteredMeals(results);
-    setCurrentPage(1);
   }, [search, meals]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   const handleEditClick = (meal) => {
     console.log("Editing meal:", meal);
