@@ -8,7 +8,7 @@ import "~/styles/MealManagement.css";
 export default function MealManagement() {
   const [meals, setMeals] = useState([]);
   const [search, setSearch] = useState("");
-  const [filteredMeals, setFilteredMeals] = useState([]);
+  // const [filteredMeals, setFilteredMeals] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -32,10 +32,10 @@ export default function MealManagement() {
   //     });
   // }, []);
 
-  const fetchMeals = async (page = 1) => {
+  const fetchMeals = async (page = 1, keyword = search) => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${page}&limit=${mealsPerPage}`,
+        `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${page}&limit=${mealsPerPage}&search=${encodeURIComponent(keyword)}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -53,19 +53,19 @@ export default function MealManagement() {
   };
 
   useEffect(() => {
-    fetchMeals(currentPage);
-  }, [currentPage]);
+    fetchMeals(currentPage, search);
+  }, [currentPage, search]);
 
-  useEffect(() => {
-    const keyword = search.toLowerCase();
-    setFilteredMeals(
-      meals.filter(
-        (m) =>
-          m.title.toLowerCase().includes(keyword) ||
-          m._id.toLowerCase().includes(keyword),
-      ),
-    );
-  }, [search, meals]);
+  // useEffect(() => {
+  //   const keyword = search.toLowerCase();
+  //   setFilteredMeals(
+  //     meals.filter(
+  //       (m) =>
+  //         m.title.toLowerCase().includes(keyword) ||
+  //         m._id.toLowerCase().includes(keyword),
+  //     ),
+  //   );
+  // }, [search, meals]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -152,7 +152,7 @@ export default function MealManagement() {
             </tr>
           </thead>
           <tbody>
-            {filteredMeals.map((meal) => (
+            {meals.map((meal) => (
               <tr key={meal._id}>
                 <td>{meal._id}</td>
                 <td>{meal.title}</td>

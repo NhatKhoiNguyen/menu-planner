@@ -95,32 +95,37 @@ def get_meals(current_user):
 
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 20))
-
     skip = (page - 1) * limit
 
+    search = request.args.get("search", "").strip()
+
     total = db.meals.count_documents({})
-                                 
-    meals = list(
-        db.meals.find(
-            {},
-            {"embedding": 0}
-        )
-        .skip(skip)
-        .limit(limit)
-    )
+
+    query = {}
+    if search:
+        query = {
+            "$or": [
+                {"title": {"$regex": search, "$options": "i"}},
+                {"_id": {"$regex": search, "$options": "i"}},
+            ]
+        }
+
+    meals = list(db.meals.find(query, {"embedding": 0}).skip(skip).limit(limit))
 
     for meal in meals:
         meal["_id"] = str(meal["_id"])
 
-    return jsonify({
-        "meals": meals,
-        "pagination": {
-            "page": page,
-            "limit": limit,
-            "total": total,
-            "totalPages": (total + limit - 1) // limit
+    return jsonify(
+        {
+            "meals": meals,
+            "pagination": {
+                "page": page,
+                "limit": limit,
+                "total": total,
+                "totalPages": (total + limit - 1) // limit,
+            },
         }
-    })
+    )
 
 
 def normalize_amount_str(amount_str, servings):
