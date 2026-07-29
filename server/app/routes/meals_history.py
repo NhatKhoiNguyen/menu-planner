@@ -6,7 +6,6 @@ from bson import ObjectId
 from datetime import datetime
 from dateutil.parser import parse as parse_date
 from app.utils.auth_decorator import login_required
-from server.app.routes import meals
 
 meals_history_bp = Blueprint("meals_history", __name__, url_prefix="/api/meals_history")
 
