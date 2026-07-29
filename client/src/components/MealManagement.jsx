@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Table, Button, InputGroup, Form, Pagination } from "react-bootstrap";
 import MealModal from "./MealModal";
 import MealDetailModal from "./MealDetailModal";
@@ -32,7 +32,7 @@ export default function MealManagement() {
   //     });
   // }, []);
 
-  const fetchMeals = async (page = 1, keyword = search) => {
+  const fetchMeals = useCallback(async (page = 1, keyword = search) => {
     try {
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${page}&limit=${mealsPerPage}&search=${encodeURIComponent(keyword)}`,
@@ -50,11 +50,11 @@ export default function MealManagement() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [search, mealsPerPage]);
 
   useEffect(() => {
-    fetchMeals(currentPage, search);
-  }, [currentPage, search]);
+    fetchMeals(currentPage, fetchMeals);
+  }, [currentPage, fetchMeals]);
 
   // useEffect(() => {
   //   const keyword = search.toLowerCase();
