@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, current_app
 from app.utils.auth_decorator import login_required
 from bson import ObjectId
+
 favorites_bp = Blueprint("favorites", __name__, url_prefix="/api/favorites")
 
 # @favorites_bp.route("/add", methods=["POST"])
@@ -41,6 +42,7 @@ favorites_bp = Blueprint("favorites", __name__, url_prefix="/api/favorites")
 
 #     return jsonify({"message": "Đã xóa khỏi danh sách yêu thích"}), 200
 
+
 @favorites_bp.route("/add", methods=["POST"])
 @login_required
 def add_favorite(current_user):
@@ -63,7 +65,7 @@ def add_favorite(current_user):
     current_app.db.favorites.update_one(
         {"user_id": user_id},
         {"$addToSet": {"meal_ids": ObjectId(meal_id)}},
-        upsert=True
+        upsert=True,
     )
 
     return jsonify({"message": "Meal added to favorites"}), 200
@@ -78,7 +80,9 @@ def get_favorites(current_user):
     if not favs or "meal_ids" not in favs:
         return jsonify({"meals": []})
 
-    meals = list(current_app.db.meals.find({"_id": {"$in": favs["meal_ids"]}}))
+    meals = list(
+        current_app.db.meals.find({"_id": {"$in": favs["meal_ids"]}}, {"embedding": 0})
+    )
 
     for meal in meals:
         meal["_id"] = str(meal["_id"])
@@ -93,8 +97,7 @@ def remove_favorite(current_user, meal_id):
 
     # Remove the string ID
     result = current_app.db.favorites.update_one(
-        {"user_id": user_id},
-        {"$pull": {"meal_ids": ObjectId(meal_id)}}
+        {"user_id": user_id}, {"$pull": {"meal_ids": ObjectId(meal_id)}}
     )
 
     if result.modified_count == 0:

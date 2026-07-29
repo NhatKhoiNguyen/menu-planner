@@ -9,6 +9,7 @@ from app.utils.auth_decorator import login_required
 
 meals_history_bp = Blueprint("meals_history", __name__, url_prefix="/api/meals_history")
 
+
 @meals_history_bp.route("/save", methods=["POST"])
 @login_required
 def save_meal_history(current_user):
@@ -35,8 +36,16 @@ def save_meal_history(current_user):
 
     def simplify_meal_section(section):
         return {
-            "main": {"id": section["main"]["id"]} if section.get("main") and "id" in section["main"] else None,
-            "snack": {"id": section["snack"]["id"]} if section.get("snack") and "id" in section["snack"] else None
+            "main": (
+                {"id": section["main"]["id"]}
+                if section.get("main") and "id" in section["main"]
+                else None
+            ),
+            "snack": (
+                {"id": section["snack"]["id"]}
+                if section.get("snack") and "id" in section["snack"]
+                else None
+            ),
         }
 
     simplified_plan = []
@@ -49,14 +58,18 @@ def save_meal_history(current_user):
                 simplified_day[meal_time] = simplify_meal_section(meal_section)
         simplified_plan.append(simplified_day)
 
-    history = MealHistory({
-        "user_id": current_user["_id"],
-        "date": date,
-        "plan": simplified_plan
-    })
+    history = MealHistory(
+        {"user_id": current_user["_id"], "date": date, "plan": simplified_plan}
+    )
 
     inserted = current_app.db.meal_histories.insert_one(history.to_dict())
-    return jsonify({"message": "Lưu thực đơn thành công", "id": str(inserted.inserted_id)}), 200
+    return (
+        jsonify(
+            {"message": "Lưu thực đơn thành công", "id": str(inserted.inserted_id)}
+        ),
+        200,
+    )
+
 
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
@@ -70,17 +83,20 @@ def save_meal_history(current_user):
 #         item["_id"] = str(h["_id"])
 #         result.append(item)
 
+
 #     return jsonify(result), 200
 @meals_history_bp.route("/list", methods=["GET"])
 @login_required
 def get_meal_history(current_user):
     try:
         user_id = str(current_user["_id"])
-        
+
         # 1. Lấy danh sách meal history của user
-        histories_cursor = current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
+        histories_cursor = current_app.db.meal_histories.find(
+            {"user_id": user_id}
+        ).sort("date", -1)
         histories = list(histories_cursor)
-    
+
         # 2. Thu thập tất cả meal IDs cần truy vấn
         meal_ids = set()
         for history in histories:
@@ -94,9 +110,14 @@ def get_meal_history(current_user):
                                 meal_ids.add(ObjectId(meal_entry["id"]))
                             except Exception:
                                 continue
-    
+
         # 3. Truy vấn meals collection một lần duy nhất
-        meals_cursor = current_app.db.meals.find({ "_id": { "$in": list(meal_ids) } })
+        meals_cursor = current_app.db.meals.find(
+            {"_id": {"$in": list(meal_ids)}},
+            {
+                "embedding": 0,
+            },
+        )
         meal_dict = {
             str(meal["_id"]): {
                 "id": str(meal["_id"]),
@@ -106,11 +127,11 @@ def get_meal_history(current_user):
                 "tags": meal.get("tags", []),
                 "ingredients": meal.get("ingredients", []),
                 "image": meal.get("main_image", ""),
-                "steps": meal.get("steps", [])
+                "steps": meal.get("steps", []),
             }
             for meal in meals_cursor
         }
-    
+
         # 4. Gộp dữ liệu món ăn vào lịch sử
         result = []
         for history in histories:
@@ -129,13 +150,15 @@ def get_meal_history(current_user):
                             new_meal_time[course] = None
                     new_day[time] = new_meal_time
                 new_plan.append(new_day)
-    
-            result.append({
-                "_id": str(history["_id"]),
-                "date": history.get("date"),
-                "plan": new_plan
-            })
-    
+
+            result.append(
+                {
+                    "_id": str(history["_id"]),
+                    "date": history.get("date"),
+                    "plan": new_plan,
+                }
+            )
+
         return jsonify(result), 200
     except Exception as e:
         traceback.print_exc()
