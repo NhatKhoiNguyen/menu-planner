@@ -6,6 +6,7 @@ from bson import ObjectId
 from datetime import datetime
 from dateutil.parser import parse as parse_date
 from app.utils.auth_decorator import login_required
+from server.app.routes import meals
 
 meals_history_bp = Blueprint("meals_history", __name__, url_prefix="/api/meals_history")
 
@@ -112,12 +113,17 @@ def get_meal_history(current_user):
                                 continue
 
         # 3. Truy vấn meals collection một lần duy nhất
+        print("Unique meal IDs:", len(meal_ids))
+
         meals_cursor = current_app.db.meals.find(
             {"_id": {"$in": list(meal_ids)}},
             {
                 "embedding": 0,
             },
         )
+
+        meals = list(meals_cursor)
+        print("Meals loaded:", len(meals))
         meal_dict = {
             str(meal["_id"]): {
                 "id": str(meal["_id"]),
@@ -129,7 +135,7 @@ def get_meal_history(current_user):
                 "image": meal.get("main_image", ""),
                 "steps": meal.get("steps", []),
             }
-            for meal in meals_cursor
+            for meal in meals
         }
 
         # 4. Gộp dữ liệu món ăn vào lịch sử
