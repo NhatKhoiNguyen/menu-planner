@@ -32,10 +32,10 @@ export default function MealManagement() {
   //     });
   // }, []);
 
-  const fetchMeals = useCallback(async (page = 1, keyword = search) => {
+  const fetchMeals = useCallback(async (page = 1) => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${page}&limit=${mealsPerPage}&search=${encodeURIComponent(keyword)}`,
+        `${process.env.REACT_APP_API_URL}/api/admin/meals?page=${page}&limit=${mealsPerPage}&search=${encodeURIComponent(search)}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -53,7 +53,7 @@ export default function MealManagement() {
   }, [search, mealsPerPage]);
 
   useEffect(() => {
-    fetchMeals(currentPage, fetchMeals);
+    fetchMeals(currentPage);
   }, [currentPage, fetchMeals]);
 
   // useEffect(() => {
