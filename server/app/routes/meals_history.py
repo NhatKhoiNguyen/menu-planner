@@ -87,100 +87,105 @@ def save_meal_history(current_user):
 
 
 #     return jsonify(result), 200
+
 @meals_history_bp.route("/list", methods=["GET"])
-@login_required
-def get_meal_history(current_user):
-    print("ENTER ROUTE")
-    try:
-        user_id = str(current_user["_id"])
+def get_meal_history():
+    print("ROUTE HIT")
+    return jsonify({"ok": True})
+# @meals_history_bp.route("/list", methods=["GET"])
+# @login_required
+# def get_meal_history(current_user):
+#     print("ENTER ROUTE")
+#     try:
+#         user_id = str(current_user["_id"])
 
-        # 1. Lấy danh sách meal history của user
-        histories_cursor = current_app.db.meal_histories.find(
-            {"user_id": user_id}
-        ).sort("date", -1)
-        print("1")
-        histories = list(histories_cursor)
-        print("2")
+#         # 1. Lấy danh sách meal history của user
+#         histories_cursor = current_app.db.meal_histories.find(
+#             {"user_id": user_id}
+#         ).sort("date", -1)
+#         print("1")
+#         histories = list(histories_cursor)
+#         print("2")
 
-        # 2. Thu thập tất cả meal IDs cần truy vấn
-        meal_ids = set()
-        for history in histories:
-            for day in history.get("plan", []):  # từng ngày
-                for time in ["Sáng", "Trưa", "Tối"]:
-                    meal_time = day.get(time, {})
-                    for course in ["main", "snack"]:
-                        meal_entry = meal_time.get(course)
-                        if meal_entry and "id" in meal_entry:
-                            try:
-                                meal_ids.add(ObjectId(meal_entry["id"]))
-                            except Exception:
-                                continue
+#         # 2. Thu thập tất cả meal IDs cần truy vấn
+#         meal_ids = set()
+#         for history in histories:
+#             for day in history.get("plan", []):  # từng ngày
+#                 for time in ["Sáng", "Trưa", "Tối"]:
+#                     meal_time = day.get(time, {})
+#                     for course in ["main", "snack"]:
+#                         meal_entry = meal_time.get(course)
+#                         if meal_entry and "id" in meal_entry:
+#                             try:
+#                                 meal_ids.add(ObjectId(meal_entry["id"]))
+#                             except Exception:
+#                                 continue
 
-        # 3. Truy vấn meals collection một lần duy nhất
-        print("Unique meal IDs:", len(meal_ids))
+#         # 3. Truy vấn meals collection một lần duy nhất
+#         print("Unique meal IDs:", len(meal_ids))
 
-        meals_cursor = current_app.db.meals.find(
-            {"_id": {"$in": list(meal_ids)}},
-            {
-                "_id": 1,
-                "title": 1,
-                "energy": 1,
-                "price": 1,
-                "tags": 1,
-                "ingredients": 1,
-                "main_image": 1,
-                "steps": 1,
-            },
-        )
+#         meals_cursor = current_app.db.meals.find(
+#             {"_id": {"$in": list(meal_ids)}},
+#             {
+#                 "_id": 1,
+#                 "title": 1,
+#                 "energy": 1,
+#                 "price": 1,
+#                 "tags": 1,
+#                 "ingredients": 1,
+#                 "main_image": 1,
+#                 "steps": 1,
+#             },
+#         )
 
-        print("3")
-        meals = list(meals_cursor)
-        print("4")
-        print("Meals loaded:", len(meals))
-        print("5")
-        meal_dict = {
-            str(meal["_id"]): {
-                "id": str(meal["_id"]),
-                "name": meal.get("title", ""),
-                "calories": meal.get("energy", 0),
-                "price": meal.get("price", 0),
-                "tags": meal.get("tags", []),
-                "ingredients": meal.get("ingredients", []),
-                "image": meal.get("main_image", ""),
-                "steps": meal.get("steps", []),
-            }
-            for meal in meals
-        }
-        print("6")
+#         print("3")
+#         meals = list(meals_cursor)
+#         print("4")
+#         print("Meals loaded:", len(meals))
+#         print("5")
+#         meal_dict = {
+#             str(meal["_id"]): {
+#                 "id": str(meal["_id"]),
+#                 "name": meal.get("title", ""),
+#                 "calories": meal.get("energy", 0),
+#                 "price": meal.get("price", 0),
+#                 "tags": meal.get("tags", []),
+#                 "ingredients": meal.get("ingredients", []),
+#                 "image": meal.get("main_image", ""),
+#                 "steps": meal.get("steps", []),
+#             }
+#             for meal in meals
+#         }
+#         print("6")
 
-        # 4. Gộp dữ liệu món ăn vào lịch sử
-        result = []
-        for history in histories:
-            new_plan = []
-            for day in history.get("plan", []):  # từng ngày
-                new_day = {}
-                for time in ["Sáng", "Trưa", "Tối"]:
-                    meal_time = day.get(time, {})
-                    new_meal_time = {}
-                    for course in ["main", "snack"]:
-                        entry = meal_time.get(course)
-                        if entry and "id" in entry:
-                            detailed = meal_dict.get(entry["id"])
-                            new_meal_time[course] = detailed if detailed else None
-                        else:
-                            new_meal_time[course] = None
-                    new_day[time] = new_meal_time
-                new_plan.append(new_day)
+#         # 4. Gộp dữ liệu món ăn vào lịch sử
+#         result = []
+#         for history in histories:
+#             new_plan = []
+#             for day in history.get("plan", []):  # từng ngày
+#                 new_day = {}
+#                 for time in ["Sáng", "Trưa", "Tối"]:
+#                     meal_time = day.get(time, {})
+#                     new_meal_time = {}
+#                     for course in ["main", "snack"]:
+#                         entry = meal_time.get(course)
+#                         if entry and "id" in entry:
+#                             detailed = meal_dict.get(entry["id"])
+#                             new_meal_time[course] = detailed if detailed else None
+#                         else:
+#                             new_meal_time[course] = None
+#                     new_day[time] = new_meal_time
+#                 new_plan.append(new_day)
 
-            result.append(
-                {
-                    "_id": str(history["_id"]),
-                    "date": history.get("date"),
-                    "plan": new_plan,
-                }
-            )
-        print("7")
-        return jsonify(result), 200
-    except Exception as e:
-        traceback.print_exc()
-        return jsonify({"error": str(e)}), 500
+#             result.append(
+#                 {
+#                     "_id": str(history["_id"]),
+#                     "date": history.get("date"),
+#                     "plan": new_plan,
+#                 }
+#             )
+#         print("7")
+#         return jsonify(result), 200
+#     except Exception as e:
+#         traceback.print_exc()
+#         return jsonify({"error": str(e)}), 500
