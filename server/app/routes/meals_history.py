@@ -1,5 +1,6 @@
 import traceback
-
+import psutil
+import os
 from flask import Blueprint, request, jsonify, current_app
 from app.models.meal_history import MealHistory
 from bson import ObjectId
@@ -86,33 +87,30 @@ def save_meal_history(current_user):
 #         result.append(item)
 #     return jsonify(result), 200
 
+def mem():
+    process = psutil.Process(os.getpid())
+    print(f"RAM = {process.memory_info().rss / 1024 / 1024:.1f} MB")
 
 @meals_history_bp.route("/list", methods=["GET"])
 @login_required
 def get_meal_history(current_user):
     user_id = str(current_user["_id"])
-
+    mem()
     histories = list(
         current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
     )
+    mem()
 
-    print("Histories =", len(histories))
+    print("Histories =", sum(len(h.get("plan", [])) for h in histories))
 
     meal_ids = set()
 
     for history in histories:
         for day in history.get("plan", []):
-            for meal_time in day.values():
-                for entry in meal_time.values():
-                    if entry and "id" in entry:
-                        print(entry["id"])          
-                        oid = ObjectId(entry["id"])
-                        print(oid)                 
-                        meal_ids.add(oid)
-
-    print("Meal IDs =", len(meal_ids))
-
-    return jsonify({"meal_ids": len(meal_ids)})
+            print(day.keys())
+            break
+    mem()
+    return jsonify({"ok":True})
 
 
 # @meals_history_bp.route("/list", methods=["GET"])
