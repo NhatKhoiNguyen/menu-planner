@@ -4,25 +4,33 @@ from app.utils.token_utils import verify_token
 from bson import ObjectId
 
 def get_current_user_from_token():
+    print("1. ENTER get_current_user_from_token")
     auth_header = request.headers.get("Authorization", "")
+    print("2. GOT HEADER")
     if not auth_header.startswith("Bearer "):
         return None, jsonify({"error": "Token thiếu hoặc sai định dạng"}), 401
 
     token = auth_header.split(" ")[1]
+    print("3. BEFORE VERIFY TOKEN")
     user_id = verify_token(token)
+    print("4. AFTER VERIFY TOKEN")
     if not user_id:
         return None, jsonify({"error": "Token hết hạn hoặc không hợp lệ"}), 401
-
+    print("5. BEFORE MONGO")
     user = current_app.db.users.find_one({"_id": ObjectId(user_id)})
+    print("6. AFTER MONGO")
     if not user:
         return None, jsonify({"error": "Người dùng không tồn tại!"}), 401
+    print("7. RETURN USER")
 
     return user, None, None
     
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        print("LOGIN_REQUIRED")
         user, error_response, status = get_current_user_from_token()
+        print("B. AFTER GET_CURRENT_USER")
         if error_response:
             return error_response, status
 
