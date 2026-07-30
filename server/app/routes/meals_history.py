@@ -7,6 +7,8 @@ from datetime import datetime
 from dateutil.parser import parse as parse_date
 from app.utils.auth_decorator import login_required
 
+print("IMPORT meals_history.py")
+
 meals_history_bp = Blueprint("meals_history", __name__, url_prefix="/api/meals_history")
 
 
