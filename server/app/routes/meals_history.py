@@ -102,11 +102,17 @@ def get_meal_history(current_user):
 
     for history in histories:
         for day in history.get("plan", []):
-            print(type(day))
-            print(day)
-            break
+            for meal_time in day.values():
+                for entry in meal_time.values():
+                    if entry and "id" in entry:
+                        print(entry["id"])          
+                        oid = ObjectId(entry["id"])
+                        print(oid)                 
+                        meal_ids.add(oid)
 
-    return jsonify({"ok": True})
+    print("Meal IDs =", len(meal_ids))
+
+    return jsonify({"meal_ids": len(meal_ids)})
 
 
 # @meals_history_bp.route("/list", methods=["GET"])
