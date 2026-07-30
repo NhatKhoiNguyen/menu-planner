@@ -41,4 +41,6 @@ def create_app():
     app.register_blueprint(stats_bp)
     app.register_blueprint(search_bp)
 
+    print(app.url_map)
+
     return app

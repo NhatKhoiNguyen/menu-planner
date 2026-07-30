@@ -91,7 +91,9 @@ def save_meal_history(current_user):
 @meals_history_bp.route("/list", methods=["GET"])
 def get_meal_history():
     print("ROUTE HIT")
-    return jsonify({"ok": True})
+    return jsonify({
+        "debug": "HELLO"
+    })
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
 # def get_meal_history(current_user):
