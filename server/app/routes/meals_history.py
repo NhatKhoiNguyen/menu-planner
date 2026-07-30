@@ -95,7 +95,9 @@ def get_meal_history(current_user):
         histories_cursor = current_app.db.meal_histories.find(
             {"user_id": user_id}
         ).sort("date", -1)
+        print("1")
         histories = list(histories_cursor)
+        print("2")
 
         # 2. Thu thập tất cả meal IDs cần truy vấn
         meal_ids = set()
@@ -117,12 +119,22 @@ def get_meal_history(current_user):
         meals_cursor = current_app.db.meals.find(
             {"_id": {"$in": list(meal_ids)}},
             {
-                "embedding": 0,
+                "_id": 1,
+                "title": 1,
+                "energy": 1,
+                "price": 1,
+                "tags": 1,
+                "ingredients": 1,
+                "main_image": 1,
+                "steps": 1,
             },
         )
 
+        print("3")
         meals = list(meals_cursor)
+        print("4")
         print("Meals loaded:", len(meals))
+        print("5")
         meal_dict = {
             str(meal["_id"]): {
                 "id": str(meal["_id"]),
@@ -136,6 +148,7 @@ def get_meal_history(current_user):
             }
             for meal in meals
         }
+        print("6")
 
         # 4. Gộp dữ liệu món ăn vào lịch sử
         result = []
@@ -163,7 +176,7 @@ def get_meal_history(current_user):
                     "plan": new_plan,
                 }
             )
-
+        print("7")
         return jsonify(result), 200
     except Exception as e:
         traceback.print_exc()
