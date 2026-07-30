@@ -4,8 +4,11 @@ from sentence_transformers import SentenceTransformer
 
 _model = None
 
+print("model_loader imported")
+
 def get_model():
     global _model
+    print("get_model called")
 
     if _model is None:
         print("Loading SentenceTransformer...")
