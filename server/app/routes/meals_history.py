@@ -99,9 +99,12 @@ def get_meal_history(current_user):
     print("Histories =", len(histories))
 
     meal_ids = set()
-    
+
     for history in histories:
-        print("History OK")
+        for day in history.get("plan", []):
+            print(type(day))
+            print(day)
+            break
 
     return jsonify({"ok": True})
 
