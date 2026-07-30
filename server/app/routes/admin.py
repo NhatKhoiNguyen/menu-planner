@@ -8,11 +8,13 @@ import os
 import json
 import re
 from copy import deepcopy
+from app.utils.model_loader import get_model
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/api/admin")
 
 
 def generate_meal_embedding(meal):
+    model = get_model()
     title = meal.get("title", "")
     tags = " ".join(meal.get("tags", []))
     ingredients = " ".join(i.get("name", "") for i in meal.get("ingredients", []))

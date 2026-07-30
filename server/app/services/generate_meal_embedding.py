@@ -5,6 +5,8 @@ from pymongo import MongoClient
 import numpy as np
 import bson
 
+from server.app.utils.model_loader import get_model
+
 client = MongoClient(os.getenv("MONGO_URI"))
 db = client["meal_planner_db"]
 meals = db["meals"]
@@ -18,6 +20,7 @@ def get_meal_text(meal):
 
 batch = []
 for meal in meals.find({"embedding": {"$exists": False}}):
+    model = get_model()
     text = get_meal_text(meal)
     embedding = model.encode(text).tolist()
     batch.append(
