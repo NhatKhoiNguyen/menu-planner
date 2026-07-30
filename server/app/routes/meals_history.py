@@ -84,16 +84,28 @@ def save_meal_history(current_user):
 #         item = MealHistory(h).to_dict()
 #         item["_id"] = str(h["_id"])
 #         result.append(item)
-
-
 #     return jsonify(result), 200
 
+
 @meals_history_bp.route("/list", methods=["GET"])
-def get_meal_history():
-    print("ROUTE HIT")
+@login_required
+def get_meal_history(current_user):
+    print("STEP 1")
+
+    user_id = str(current_user["_id"])
+
+    histories = list(
+        current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
+    )
+
+    print("Histories:", len(histories))
+
     return jsonify({
-        "debug": "HELLO"
+        "ok": True,
+        "count": len(histories)
     })
+
+
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
 # def get_meal_history(current_user):
