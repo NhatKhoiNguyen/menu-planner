@@ -89,7 +89,15 @@ def save_meal_history(current_user):
 @meals_history_bp.route("/list", methods=["GET"])
 @login_required
 def get_meal_history(current_user):
-    return jsonify({"ok": True})
+    user_id = str(current_user["_id"])
+
+    histories = list(
+        current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
+    )
+
+    print("Histories =", len(histories))
+
+    return jsonify({"count": len(histories)})
 
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
