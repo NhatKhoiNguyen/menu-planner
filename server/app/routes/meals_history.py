@@ -86,20 +86,27 @@ def save_meal_history(current_user):
 #         result.append(item)
 #     return jsonify(result), 200
 
-@meals_history_bp.route("/list", methods=["GET"])
-def get_meal_history():
-    return jsonify({"ok": True})
-
 # @meals_history_bp.route("/list", methods=["GET"])
-# @login_required
-# def get_meal_history(current_user):
-#     print("1")
-
-#     history = MealHistory.find_by_user(current_user["_id"])
-
-#     print("2")
-
+# def get_meal_history():
 #     return jsonify({"ok": True})
+
+@meals_history_bp.route("/list", methods=["GET"])
+@login_required
+def get_meal_history(current_user):
+    print("STEP 1")
+
+    user_id = str(current_user["_id"])
+
+    histories = list(
+        current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
+    )
+
+    print("Histories:", len(histories))
+
+    return jsonify({
+        "ok": True,
+        "count": len(histories)
+    })
 
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
