@@ -88,6 +88,7 @@ def save_meal_history(current_user):
 @meals_history_bp.route("/list", methods=["GET"])
 @login_required
 def get_meal_history(current_user):
+    print("ENTER ROUTE")
     try:
         user_id = str(current_user["_id"])
 
