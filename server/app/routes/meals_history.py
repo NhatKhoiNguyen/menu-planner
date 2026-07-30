@@ -86,6 +86,7 @@ def save_meal_history(current_user):
 #         result.append(item)
 #     return jsonify(result), 200
 
+
 @meals_history_bp.route("/list", methods=["GET"])
 @login_required
 def get_meal_history(current_user):
@@ -97,7 +98,24 @@ def get_meal_history(current_user):
 
     print("Histories =", len(histories))
 
-    return jsonify({"count": len(histories)})
+    meal_ids = set()
+
+    for history in histories:
+        for day in history.get("plan", []):
+            for time in ["Sáng", "Trưa", "Tối"]:
+                meal_time = day.get(time, {})
+                for course in ["main", "snack"]:
+                    entry = meal_time.get(course)
+                    if entry and "id" in entry:
+                        try:
+                            meal_ids.add(ObjectId(entry["id"]))
+                        except Exception as e:
+                            print("Bad meal id:", entry["id"], e)
+
+    print("Meal IDs =", len(meal_ids))
+
+    return jsonify({"histories": len(histories), "meal_ids": len(meal_ids)})
+
 
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
