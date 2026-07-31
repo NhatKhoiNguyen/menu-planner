@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, current_app
 from app.utils.auth_decorator import admin_required
 from bson import ObjectId
 from dotenv import load_dotenv
-import google.generativeai as genai
+# import google.generativeai as genai
 from datetime import datetime
 import os
 import json
