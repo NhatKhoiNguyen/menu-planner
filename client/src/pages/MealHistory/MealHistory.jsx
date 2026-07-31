@@ -31,6 +31,7 @@ const MealHistory = () => {
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
+  const [mealLoading, setMealLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -46,9 +47,21 @@ const MealHistory = () => {
     }
   };
 
-  const openMealDetail = (meal) => {
-    setSelectedMeal(meal);
-    setShowDetailModal(true);
+  const openMealDetail = async (meal) => {
+    try {
+      setMealLoading(true);
+
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/meals/${meal.id}`,
+      );
+
+      setSelectedMeal(res.data);
+      setShowDetailModal(true);
+    } catch (err) {
+      console.error("Lỗi tải chi tiết món ăn:", err);
+    } finally {
+      setMealLoading(false);
+    }
   };
 
   const closeMealDetail = () => {
@@ -90,7 +103,7 @@ const MealHistory = () => {
           `${process.env.REACT_APP_API_URL}/api/meals_history/list`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
 
         if (res.status === 200) {
@@ -128,6 +141,15 @@ const MealHistory = () => {
   }
 
   if (loading) return <Spinner animation="border" />;
+  
+  if (mealLoading) {
+    return (
+      <div className="text-center mt-5">
+        <Spinner animation="border" />
+        <p className="mt-2">Đang tải chi tiết món ăn...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="meal-history-container">
@@ -270,7 +292,7 @@ const MealHistory = () => {
                                     )}
                                   </Row>
                                 </ListGroup.Item>
-                              )
+                              ),
                             )}
                           </ListGroup>
                         </div>

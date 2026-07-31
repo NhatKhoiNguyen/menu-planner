@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify, current_app
 from app.models.meal import Meal
+from bson import ObjectId
 import random
 from app.utils.meal_utils import meal_to_dict
+
 # from app.utils.similarity import suggest_similar_meals
 from app.services.meal_service import toggle_snack_logic
 from app.services.meal_service import suggest_similar_meals
@@ -28,11 +30,50 @@ meals_bp = Blueprint("meals", __name__, url_prefix="/api/meals")
 @meals_bp.route("/", methods=["GET"])
 def get_all_meals():
     meals_cursor = current_app.db.meals.find(
-        {},
-        {"embedding": 0}  # Exclude the embedding field from the response
+        {}, {"embedding": 0}  # Exclude the embedding field from the response
     )
     meals = [Meal(meal).to_dict() for meal in meals_cursor]
     return jsonify(meals), 200
+
+
+@meals_bp.route("/<meal_id>", methods=["GET"])
+def get_meal_detail(meal_id):
+    try:
+        meal = current_app.db.meals.find_one(
+            {"_id": ObjectId(meal_id)},
+            {
+                "_id": 1,
+                "title": 1,
+                "energy": 1,
+                "price": 1,
+                "tags": 1,
+                "ingredients": 1,
+                "main_image": 1,
+                "steps": 1,
+            },
+        )
+
+        if not meal:
+            return jsonify({"error": "Meal not found"}), 404
+
+        return (
+            jsonify(
+                {
+                    "id": str(meal["_id"]),
+                    "name": meal.get("title", ""),
+                    "calories": meal.get("energy", 0),
+                    "price": meal.get("price", 0),
+                    "image": meal.get("main_image", ""),
+                    "tags": meal.get("tags", []),
+                    "ingredients": meal.get("ingredients", []),
+                    "steps": meal.get("steps", []),
+                }
+            ),
+            200,
+        )
+
+    except Exception:
+        return jsonify({"error": "Invalid meal id"}), 400
 
 
 # @meals_bp.route("/suggest", methods=["POST"])
@@ -205,8 +246,8 @@ def get_all_meals():
 
 #                 # Chọn main
 #                 main_options = [
-#                     m for m in enriched_meals if m["type"] == "main" 
-#                     and m["_id"] not in banned_ids 
+#                     m for m in enriched_meals if m["type"] == "main"
+#                     and m["_id"] not in banned_ids
 #                     and m["_id"] not in daily_used_ids
 #                     and is_valid_energy(m["energy"], meal_calo_target)
 #                 ]
@@ -220,14 +261,14 @@ def get_all_meals():
 #                 #         is_valid_energy(m["energy"], meal_calo_target)),
 #                 #     None
 #                 # )
-                
+
 #                 # if not selected_main:
 #                 #     selected_main = next(
 #                 #         (m for m in sorted(main_options, key=lambda m: m["price"])
 #                 #         if m["price"] + daily_cost <= budget),
 #                 #         None
 #                 #     )
-#                 #-----------------------------------                           
+#                 #-----------------------------------
 
 
 #                 if not selected_main:
@@ -268,8 +309,8 @@ def get_all_meals():
 #                     meal_calo_target = calories * calorie_distribution[meal_time]
 
 #                     main_options = [
-#                         m for m in enriched_meals if m["type"] == "main" 
-#                         and m["_id"] not in banned_ids 
+#                         m for m in enriched_meals if m["type"] == "main"
+#                         and m["_id"] not in banned_ids
 #                         and m["_id"] not in daily_used_ids
 #                         and is_valid_energy(m["energy"], meal_calo_target)
 #                     ]
@@ -295,7 +336,7 @@ def get_all_meals():
 #                     if not selected_main:
 #                         valid_plan = False
 #                         break
-                    
+
 #                     total_cost += selected_main["price"]
 #                     daily_used_ids.add(selected_main["_id"])
 
@@ -318,7 +359,7 @@ def get_all_meals():
 #                 suggestions = temp_suggestions
 #                 break
 
-#         #hàm check            
+#         #hàm check
 #         # print("valid_plan:", valid_plan)
 #         # print("num_days:", num_days, "temp_suggestions:", len(temp_suggestions))
 #         # print("total_cost:", total_cost, "budget:", budget)
@@ -391,7 +432,7 @@ def get_all_meals():
 #         # def tag_similarity(m1, m2):
 #         #     t1, t2 = set(m1.get("tags", [])), set(m2.get("tags", []))
 #         #     return len(t1 & t2) / (len(t1 | t2) + 1e-6)
-        
+
 #         # def ingredient_similarity(m1, m2):
 #         #     ing1 = set(i.get("name", "").lower() for i in m1.get("ingredients", []))
 #         #     ing2 = set(i.get("name", "").lower() for i in m2.get("ingredients", []))
@@ -618,19 +659,19 @@ def get_all_meals():
 #             return jsonify({"error": "Không thể tạo đủ 3 bữa mỗi ngày trong giới hạn ngân sách"}), 400
 
 #     return jsonify(suggestions), 200
-    
 
 
 def get_user_ingredient_vector(user_meal_ids, meals_collection, all_ingredient_names):
     vector = np.zeros(len(all_ingredient_names))
     name_to_idx = {name: i for i, name in enumerate(all_ingredient_names)}
-    
+
     for meal in meals_collection.find({"_id": {"$in": list(user_meal_ids)}}):
         for ing in meal.get("ingredients", []):
             name = ing.get("name", "")
             if name in name_to_idx:
                 vector[name_to_idx[name]] += 1
     return vector
+
 
 @meals_bp.route("/suggest", methods=["POST"])
 def suggest_meals():
@@ -648,14 +689,12 @@ def suggest_meals():
 
     db = current_app.db
 
-    calorie_distribution = {
-        "Sáng": 0.2,
-        "Trưa": 0.4,
-        "Tối": 0.4
-    }
+    calorie_distribution = {"Sáng": 0.2, "Trưa": 0.4, "Tối": 0.4}
 
     total_ratio = sum(calorie_distribution[m] for m in meal_times)
-    adjusted_distribution = {m: calorie_distribution[m] / total_ratio for m in meal_times}
+    adjusted_distribution = {
+        m: calorie_distribution[m] / total_ratio for m in meal_times
+    }
 
     # Tìm món phù hợp preferences và không dị ứng
     query = {"tags": {"$in": preferences}}
@@ -663,13 +702,13 @@ def suggest_meals():
         query["$or"] = [
             {"allergens": {"$exists": False}},
             {"allergens": {"$eq": []}},
-            {"allergens": {"$not": {"$elemMatch": {"$in": allergens}}}}
+            {"allergens": {"$not": {"$elemMatch": {"$in": allergens}}}},
         ]
 
     all_meals = list(db.meals.find(query))
     if not all_meals:
         return jsonify({"error": "Không tìm thấy món phù hợp"}), 404
-    
+
     print("Sample meal:", all_meals[0].get("embedding"))
     print("Has embedding:", [m["_id"] for m in all_meals if "embedding" in m])
 
@@ -680,7 +719,6 @@ def suggest_meals():
         fallback_meals.append(m_copy)
 
     enriched_meals = fallback_meals.copy()
-
 
     # === Collaborative Filtering - Clustering theo ingredient vector ===
     # def extract_meal_ids(plan, target_calories=None):
@@ -723,7 +761,6 @@ def suggest_meals():
     # labels = kmeans.fit_predict(user_vectors)
     # user_id_to_cluster = dict(zip(user_ids, labels))
 
-
     # ===== Nếu có user login thì thêm collaborative & content-based filtering =====
     user_id = None
     token = request.headers.get("Authorization", "").replace("Bearer ", "")
@@ -748,7 +785,6 @@ def suggest_meals():
         used_meal_ids = set(user_meal_ids)
         used_meals = [meal for meal in all_meals if meal["_id"] in used_meal_ids]
         user_meals = list(db.meals.find({"_id": {"$in": list(user_meal_ids)}}))
-
 
         # Content-based filtering: chọn món dựa trên embedding similarity với user meals
         # def embedding_similarity(m1, m2):
@@ -775,20 +811,29 @@ def suggest_meals():
         # user_embeddings = model.encode(user_texts, convert_to_numpy=True, show_progress_bar=False)
         # all_embeddings = model.encode(all_texts, convert_to_numpy=True, show_progress_bar=False)
 
-        user_embeddings_list = [meal["embedding"] for meal in user_meals if "embedding" in meal]
+        user_embeddings_list = [
+            meal["embedding"] for meal in user_meals if "embedding" in meal
+        ]
         user_meals = [
-            m for m in user_meals
+            m
+            for m in user_meals
             if 0.6 * calories <= m.get("energy", 0) <= 1.4 * calories
         ]
 
-        all_embeddings_list = [m.get("embedding") for m in all_meals if m.get("embedding")]
+        all_embeddings_list = [
+            m.get("embedding") for m in all_meals if m.get("embedding")
+        ]
 
         # Nếu không có embedding từ user => bỏ qua content-based filtering
         if not user_embeddings_list or not all_embeddings_list:
             content_meals = []  # fallback về empty
         else:
-            user_embeddings = np.array(user_embeddings_list).reshape(len(user_embeddings_list), -1)
-            all_embeddings = np.array(all_embeddings_list).reshape(len(all_embeddings_list), -1)
+            user_embeddings = np.array(user_embeddings_list).reshape(
+                len(user_embeddings_list), -1
+            )
+            all_embeddings = np.array(all_embeddings_list).reshape(
+                len(all_embeddings_list), -1
+            )
 
             # Tính cosine_similarity matrix (all x user)
             sim_matrix = cosine_similarity(all_embeddings, user_embeddings)
@@ -801,7 +846,9 @@ def suggest_meals():
             # content_meals = [m for _, m in scored_meals[:100]]
             top_similar = [m for m in scored_meals if m[0] >= 0.8][:50]
             mid_similar_pool = [m for m in scored_meals if 0.75 <= m[0] < 0.9]
-            mid_similar = random.sample(mid_similar_pool, min(len(mid_similar_pool), 20))
+            mid_similar = random.sample(
+                mid_similar_pool, min(len(mid_similar_pool), 20)
+            )
             combined_meals = top_similar + mid_similar
             random.shuffle(combined_meals)
             content_meals = []
@@ -816,9 +863,16 @@ def suggest_meals():
                 novelty_bonus = 0.4 if m_copy["_id"] not in used_meal_ids else 0.0
                 diversity_bonus = 0.15 if sim <= 0.85 else 0.0
                 random_bonus = random.uniform(0, 0.03)
-                m_copy["score"] = 0.5 * base_score + 0.3 * novelty_bonus + 0.15 * diversity_bonus + 0.05 * random_bonus
+                m_copy["score"] = (
+                    0.5 * base_score
+                    + 0.3 * novelty_bonus
+                    + 0.15 * diversity_bonus
+                    + 0.05 * random_bonus
+                )
                 content_meals.append(m_copy)
-            content_meals_new = [m for m in content_meals if m["_id"] not in used_meal_ids]
+            content_meals_new = [
+                m for m in content_meals if m["_id"] not in used_meal_ids
+            ]
             content_meals_used = [m for m in content_meals if m["_id"] in used_meal_ids]
 
         # Collaborative filtering: chọn user cùng cluster
@@ -829,14 +883,17 @@ def suggest_meals():
             logger.warning(f"User {user_id} chưa được gán cluster_id.")
             similar_user_ids = []
         else:
-            similar_user_ids = list({
-            uid_doc["user_id"]
-            for uid_doc in db.meal_histories.find({
-                "cluster_id": cluster_label,
-                "user_id": {"$ne": user_id}
-            })
-        })
-        print(f"Cluster label: {cluster_label} - Found {len(similar_user_ids)} similar users")
+            similar_user_ids = list(
+                {
+                    uid_doc["user_id"]
+                    for uid_doc in db.meal_histories.find(
+                        {"cluster_id": cluster_label, "user_id": {"$ne": user_id}}
+                    )
+                }
+            )
+        print(
+            f"Cluster label: {cluster_label} - Found {len(similar_user_ids)} similar users"
+        )
 
         # similar_user_ids = [
         #     uid for uid, cl in user_id_to_cluster.items()
@@ -857,23 +914,35 @@ def suggest_meals():
                             meal = d.get(t, {}).get(k)
                             if meal and "id" in meal:
                                 try:
-                                    meal_detail = db.meals.find_one({"_id": ObjectId(meal["id"])})
+                                    meal_detail = db.meals.find_one(
+                                        {"_id": ObjectId(meal["id"])}
+                                    )
                                     if meal_detail:
-                                        if 0.6 * calories <= meal_detail.get("energy", 0) <= 1.4 * calories:
+                                        if (
+                                            0.6 * calories
+                                            <= meal_detail.get("energy", 0)
+                                            <= 1.4 * calories
+                                        ):
                                             collab_ids.add(meal_detail["_id"])
                                 except Exception as e:
                                     print("Error fetching meal:", e)
-                    
-            print("Collected collaborative meal IDs:", list(collab_ids))        
 
-            collaborative_meals_raw = list(db.meals.find({"_id": {"$in": list(collab_ids)},
-                                                    "energy": {"$gte": 0.6 * calories, "$lte": 1.4 * calories}}))
+            print("Collected collaborative meal IDs:", list(collab_ids))
+
+            collaborative_meals_raw = list(
+                db.meals.find(
+                    {
+                        "_id": {"$in": list(collab_ids)},
+                        "energy": {"$gte": 0.6 * calories, "$lte": 1.4 * calories},
+                    }
+                )
+            )
             print("Collaborative meals found:", len(collaborative_meals_raw))
             # collab_scores = [(str(m["_id"]), m["title"]) for m in collaborative_meals]
             for m in collaborative_meals_raw:
                 m_copy = m.copy()
                 base_score = 0.85 + random.uniform(0, 0.05)
-                novelty_bonus = 0.4 if m_copy["_id"] not in used_meal_ids else 0.0 
+                novelty_bonus = 0.4 if m_copy["_id"] not in used_meal_ids else 0.0
                 random_bonus = random.uniform(0, 0.05)
                 diversity_bonus = 0.1
                 if not used_meals:
@@ -881,18 +950,29 @@ def suggest_meals():
                 if m_copy.get("embedding") is not None and used_meals:
                     similarities = cosine_similarity(
                         [m_copy["embedding"]],
-                        [meal["embedding"] for meal in used_meals if meal.get("embedding") is not None]
+                        [
+                            meal["embedding"]
+                            for meal in used_meals
+                            if meal.get("embedding") is not None
+                        ],
                     )
                     max_sim = similarities.max() if similarities.size > 0 else 0
                     diversity_bonus = 0.15 if max_sim <= 0.85 else 0.05
 
                 random_bonus = random.uniform(0, 0.03)
 
-                m_copy["score"] = 0.5 * base_score + 0.3 * novelty_bonus + 0.15 * diversity_bonus +0.05 * random_bonus
+                m_copy["score"] = (
+                    0.5 * base_score
+                    + 0.3 * novelty_bonus
+                    + 0.15 * diversity_bonus
+                    + 0.05 * random_bonus
+                )
                 collaborative_meals.append(m_copy)
 
         if not collaborative_meals and len(similar_user_ids) >= 1:
-            print("Không tìm thấy món collaborative phù hợp. Sử dụng fallback: món phổ biến nhất trong cluster.")
+            print(
+                "Không tìm thấy món collaborative phù hợp. Sử dụng fallback: món phổ biến nhất trong cluster."
+            )
 
             meal_counter = Counter()
             for h in db.meal_histories.find({"user_id": {"$in": similar_user_ids}}):
@@ -912,8 +992,12 @@ def suggest_meals():
                 m["score"] = 0.9
             collaborative_meals = popular_meals
             print(f"Used fallback popular meals in cluster: {len(collaborative_meals)}")
-        collaborative_meals_new = [m for m in collaborative_meals if m["_id"] not in used_meal_ids]
-        collaborative_meals_used = [m for m in collaborative_meals if m["_id"] in used_meal_ids]
+        collaborative_meals_new = [
+            m for m in collaborative_meals if m["_id"] not in used_meal_ids
+        ]
+        collaborative_meals_used = [
+            m for m in collaborative_meals if m["_id"] in used_meal_ids
+        ]
         # random.shuffle(collaborative_meals)
         # for m in collaborative_meals:
         #     m["score"] = 0.95 + random.uniform(0, 0.05)
@@ -934,7 +1018,7 @@ def suggest_meals():
                 extra = random.sample(lst, min(extra_num, len(lst)))
                 result += extra
             return result
-        
+
         if len(user_meals) < 5:
             content_weight = 1.5
             collab_weight = 0.8
@@ -943,11 +1027,11 @@ def suggest_meals():
             collab_weight = 1.1
 
         merged = (
-            multiply_list(content_meals_new, content_weight) +
-            multiply_list(collaborative_meals_new, collab_weight) +
-            multiply_list(content_meals_used, 0.8) +
-            multiply_list(collaborative_meals_used, 0.8) +
-            fallback_meals
+            multiply_list(content_meals_new, content_weight)
+            + multiply_list(collaborative_meals_new, collab_weight)
+            + multiply_list(content_meals_used, 0.8)
+            + multiply_list(collaborative_meals_used, 0.8)
+            + fallback_meals
         )
 
         merged_dict = {}
@@ -955,7 +1039,9 @@ def suggest_meals():
             mid = str(m["_id"])
             if mid not in merged_dict or m["score"] > merged_dict[mid]["score"]:
                 merged_dict[mid] = m
-        enriched_meals = sorted(merged_dict.values(), key=lambda m: m["score"], reverse=True)
+        enriched_meals = sorted(
+            merged_dict.values(), key=lambda m: m["score"], reverse=True
+        )
 
         diversity_pool = enriched_meals[:200]
         remaining_pool = enriched_meals[200:]
@@ -963,11 +1049,14 @@ def suggest_meals():
         final_enriched = []
         seen_tokens = []
         embedding_seen = []
+
         def is_too_similar(title_tokens, seen_tokens, threshold=2):
             return any(len(title_tokens & prev) >= threshold for prev in seen_tokens)
-        
+
         def is_embedding_too_similar(embed1, embed_list, threshold=0.8):
-            return any(cosine_similarity([embed1], [e])[0][0] >= threshold for e in embed_list)
+            return any(
+                cosine_similarity([embed1], [e])[0][0] >= threshold for e in embed_list
+            )
 
         for m in diversity_pool:
             embed = m.get("embedding")
@@ -976,7 +1065,9 @@ def suggest_meals():
             #     continue
             if is_too_similar(title_tokens, seen_tokens, threshold=2):
                 continue
-            if embed is not None and is_embedding_too_similar(embed, embedding_seen, threshold=0.8):
+            if embed is not None and is_embedding_too_similar(
+                embed, embedding_seen, threshold=0.8
+            ):
                 continue
             seen_tokens.append(title_tokens)
             if embed is not None:
@@ -1004,14 +1095,17 @@ def suggest_meals():
         if len(final_enriched) < 30:
             missing = 30 - len(final_enriched)
             candidates = [
-                m for m in remaining_pool
+                m
+                for m in remaining_pool
                 if set(m["title"].lower().split()) not in seen_tokens
             ]
             random.shuffle(candidates)
             final_enriched.extend(candidates[:missing])
 
         # Ghép lại toàn bộ enriched_meals đã đa dạng hóa trước
-        enriched_meals = final_enriched + [m for m in remaining_pool if m not in final_enriched]
+        enriched_meals = final_enriched + [
+            m for m in remaining_pool if m not in final_enriched
+        ]
         print("Tổng số món enriched_meals sau diversity filter:", len(enriched_meals))
 
         for m in enriched_meals[:30]:
@@ -1026,7 +1120,7 @@ def suggest_meals():
         # }.values())
         logger.info("Logging recommendations: %s", user_id)
         logger.info("Total enriched meals: %s", len(enriched_meals))
-        
+
         # === Ghi lại top-30 món gợi ý để đánh giá precision ===
         try:
             print("Verified user_id:", user_id)
@@ -1039,20 +1133,28 @@ def suggest_meals():
             # })
             top_k_meals = enriched_meals[:30]
             for m in top_k_meals:
-                print("Meal:", m.get("title"), m.get("_id"), "Score:", round(m["score"], 4))
-            db.recommendation_logs.insert_one({
-                "user_id": user_id,
-                "recommended_meals": [str(m["_id"]) for m in top_k_meals],
-                "timestamp": datetime.utcnow(),
-                "used_fallback_collaborative": True if not collaborative_meals_raw else False,
-                "cluster_label": cluster_label,
-                "collaborative_source_user_ids": similar_user_ids,
-            })
+                print(
+                    "Meal:",
+                    m.get("title"),
+                    m.get("_id"),
+                    "Score:",
+                    round(m["score"], 4),
+                )
+            db.recommendation_logs.insert_one(
+                {
+                    "user_id": user_id,
+                    "recommended_meals": [str(m["_id"]) for m in top_k_meals],
+                    "timestamp": datetime.utcnow(),
+                    "used_fallback_collaborative": (
+                        True if not collaborative_meals_raw else False
+                    ),
+                    "cluster_label": cluster_label,
+                    "collaborative_source_user_ids": similar_user_ids,
+                }
+            )
 
         except Exception as e:
             print("Insert log failed:", e)
-
-
 
     # ==== Chức năng lựa chọn món theo ngân sách và calo ====
     def is_valid_energy(val, target):
@@ -1069,14 +1171,20 @@ def suggest_meals():
     def sort_meals_by_score(meals, target):
         return sorted(meals, key=lambda m: score_meal(m, target))
 
-    def pick_main_and_snack(meal_time, meal_calo_target, budget_left, enriched_meals, banned_ids, used_ids):
+    def pick_main_and_snack(
+        meal_time, meal_calo_target, budget_left, enriched_meals, banned_ids, used_ids
+    ):
         main_options = [
-            m for m in enriched_meals if m["type"] == "main"
+            m
+            for m in enriched_meals
+            if m["type"] == "main"
             and m["_id"] not in banned_ids
             and m["_id"] not in used_ids
         ]
         snack_options = [
-            m for m in enriched_meals if m["type"] == "snack"
+            m
+            for m in enriched_meals
+            if m["type"] == "snack"
             and m["_id"] not in banned_ids
             and m["_id"] not in used_ids
         ]
@@ -1089,8 +1197,12 @@ def suggest_meals():
             for snack in snack_options:
                 total_energy = main["energy"] + snack["energy"]
                 total_price = main["price"] + snack["price"]
-                if total_price <= budget_left and is_valid_energy(total_energy, meal_calo_target):
-                    score = score_meal(main, meal_calo_target * 0.7) + score_meal(snack, meal_calo_target * 0.3)
+                if total_price <= budget_left and is_valid_energy(
+                    total_energy, meal_calo_target
+                ):
+                    score = score_meal(main, meal_calo_target * 0.7) + score_meal(
+                        snack, meal_calo_target * 0.3
+                    )
                     valid_combos.append((score, (main, snack)))
         valid_combos.sort(key=lambda x: x[0])
         top_combos = valid_combos[:15]
@@ -1105,7 +1217,6 @@ def suggest_meals():
                 return main, None
 
         return best_combo if best_combo else (None, None)
-
 
     # ======== Build Suggestions =========
     suggestions = []
@@ -1123,12 +1234,21 @@ def suggest_meals():
             for meal_time in meal_times:
                 meal_calo_target = calories * calorie_distribution[meal_time]
                 main, snack = pick_main_and_snack(
-                    meal_time, meal_calo_target, budget - daily_cost,
-                    enriched_meals, banned_ids, daily_used_ids
+                    meal_time,
+                    meal_calo_target,
+                    budget - daily_cost,
+                    enriched_meals,
+                    banned_ids,
+                    daily_used_ids,
                 )
 
                 if not main:
-                    return jsonify({"error": f"Không tìm được món phù hợp cho bữa {meal_time}"}), 400
+                    return (
+                        jsonify(
+                            {"error": f"Không tìm được món phù hợp cho bữa {meal_time}"}
+                        ),
+                        400,
+                    )
 
                 daily_cost += main["price"]
                 if snack:
@@ -1138,8 +1258,20 @@ def suggest_meals():
                 daily_used_ids.add(main["_id"])
 
                 daily_plan[meal_time] = {
-                    "main": meal_to_dict(main, original_calories=main["energy"], original_cost=main["price"]),
-                    "snack": meal_to_dict(snack, original_calories=snack["energy"], original_cost=snack["price"]) if snack else None
+                    "main": meal_to_dict(
+                        main,
+                        original_calories=main["energy"],
+                        original_cost=main["price"],
+                    ),
+                    "snack": (
+                        meal_to_dict(
+                            snack,
+                            original_calories=snack["energy"],
+                            original_cost=snack["price"],
+                        )
+                        if snack
+                        else None
+                    ),
                 }
 
             suggestions.append(daily_plan)
@@ -1163,8 +1295,12 @@ def suggest_meals():
                 for meal_time in meal_times:
                     meal_calo_target = calories * calorie_distribution[meal_time]
                     main, snack = pick_main_and_snack(
-                        meal_time, meal_calo_target, budget - total_cost,
-                        enriched_meals, banned_ids, daily_used_ids
+                        meal_time,
+                        meal_calo_target,
+                        budget - total_cost,
+                        enriched_meals,
+                        banned_ids,
+                        daily_used_ids,
                     )
 
                     if not main:
@@ -1179,8 +1315,20 @@ def suggest_meals():
                         total_cost += snack["price"]
 
                     daily_plan[meal_time] = {
-                        "main": meal_to_dict(main, original_calories=main["energy"], original_cost=main["price"]),
-                        "snack": meal_to_dict(snack, original_calories=snack["energy"], original_cost=snack["price"]) if snack else None
+                        "main": meal_to_dict(
+                            main,
+                            original_calories=main["energy"],
+                            original_cost=main["price"],
+                        ),
+                        "snack": (
+                            meal_to_dict(
+                                snack,
+                                original_calories=snack["energy"],
+                                original_cost=snack["price"],
+                            )
+                            if snack
+                            else None
+                        ),
                     }
 
                 if not valid_plan or len(daily_plan) < len(meal_times):
@@ -1189,18 +1337,25 @@ def suggest_meals():
                 temp_suggestions.append(daily_plan)
                 recent_meal_history.append(daily_used_ids)
 
-            if valid_plan and len(temp_suggestions) == num_days and total_cost <= budget:
+            if (
+                valid_plan
+                and len(temp_suggestions) == num_days
+                and total_cost <= budget
+            ):
                 suggestions = temp_suggestions
                 break
 
         if not suggestions:
-            return jsonify({"error": "Không thể tạo đủ 3 bữa mỗi ngày trong giới hạn ngân sách"}), 400
+            return (
+                jsonify(
+                    {
+                        "error": "Không thể tạo đủ 3 bữa mỗi ngày trong giới hạn ngân sách"
+                    }
+                ),
+                400,
+            )
 
     return jsonify(suggestions), 200
-
-
-
-
 
 
 @meals_bp.route("/similar/<meal_id>", methods=["GET"])
@@ -1209,7 +1364,9 @@ def get_similar_meals(meal_id):
     print("Allergens filter:", allergens)
     max_cal = request.args.get("calories", type=float)
     max_price = request.args.get("price", type=float)
-    similar_meals = suggest_similar_meals(meal_id, allergens=allergens, max_cal=max_cal, max_price=max_price)  # logic content-based filtering
+    similar_meals = suggest_similar_meals(
+        meal_id, allergens=allergens, max_cal=max_cal, max_price=max_price
+    )  # logic content-based filtering
     return jsonify(similar_meals)
 
 
@@ -1231,7 +1388,6 @@ def toggle_snack():
     allergens = data.get("allergens", [])
     print("preferences", preferences)
     print("allergens", allergens)
-
 
     if not current_main:
         return jsonify({"error": "Thiếu dữ liệu"}), 400
@@ -1268,9 +1424,7 @@ def search_meals():
 
     db = current_app.db
 
-    query = {
-        "title": {"$regex": keyword, "$options": "i"}
-    }
+    query = {"title": {"$regex": keyword, "$options": "i"}}
 
     # Bổ sung lọc nếu có input
     if min_cal is not None and max_cal is not None:
@@ -1282,13 +1436,21 @@ def search_meals():
 
     print("Final MongoDB query:", query)
 
-    results = list(db.meals.find(
-        query,
-        {
-            "title": 1, "type": 1, "energy": 1, "price": 1,
-            "tags": 1, "ingredients": 1, "main_image": 1, "steps": 1
-        }
-    ).limit(20))  # Giới hạn 20 món
+    results = list(
+        db.meals.find(
+            query,
+            {
+                "title": 1,
+                "type": 1,
+                "energy": 1,
+                "price": 1,
+                "tags": 1,
+                "ingredients": 1,
+                "main_image": 1,
+                "steps": 1,
+            },
+        ).limit(20)
+    )  # Giới hạn 20 món
 
     def meal_to_brief(m):
         return {
@@ -1300,7 +1462,7 @@ def search_meals():
             "tags": m.get("tags", []),
             "ingredients": m.get("ingredients", []),
             "image": m.get("main_image", ""),
-            "steps": m.get("steps", [])
+            "steps": m.get("steps", []),
         }
 
     return jsonify([meal_to_brief(m) for m in results])

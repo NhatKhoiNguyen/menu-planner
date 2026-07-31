@@ -74,67 +74,35 @@ def save_meal_history(current_user):
     )
 
 
-# @meals_history_bp.route("/list", methods=["GET"])
-# @login_required
-# def get_meal_history(current_user):
-#     user_id = str(current_user["_id"])
-#     histories = current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
-
-#     result = []
-#     for h in histories:
-#         item = MealHistory(h).to_dict()
-#         item["_id"] = str(h["_id"])
-#         result.append(item)
-#     return jsonify(result), 200
-
 def mem():
     process = psutil.Process(os.getpid())
     print(f"RAM = {process.memory_info().rss / 1024 / 1024:.1f} MB")
 
-@meals_history_bp.route("/list", methods=["GET"])
-@login_required
-def get_meal_history(current_user):
-    user_id = str(current_user["_id"])
-    mem()
-    histories = list(
-        current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
-    )
-    mem()
-
-    print("Histories =", sum(len(h.get("plan", [])) for h in histories))
-
-    meal_ids = set()
-
-    for history in histories:
-        for day in history.get("plan", []):
-            print(day.keys())
-            break
-    mem()
-    return jsonify({"ok":True})
-
 
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
 # def get_meal_history(current_user):
-#     print("STEP 1")
-
 #     user_id = str(current_user["_id"])
-
+#     mem()
 #     histories = list(
 #         current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
 #     )
+#     mem()
 
-#     print("Histories:", len(histories))
+#     print("Histories =", sum(len(h.get("plan", [])) for h in histories))
 
-#     return jsonify({
-#         "ok": True,
-#         "count": len(histories)
-#     })
+#     meal_ids = set()
+
+#     for history in histories:
+#         for day in history.get("plan", []):
+#             print(day.keys())
+#             break
+#     mem()
+#     return jsonify({"ok":True})
 
 # @meals_history_bp.route("/list", methods=["GET"])
 # @login_required
 # def get_meal_history(current_user):
-#     print("ENTER ROUTE")
 #     try:
 #         user_id = str(current_user["_id"])
 
@@ -142,9 +110,7 @@ def get_meal_history(current_user):
 #         histories_cursor = current_app.db.meal_histories.find(
 #             {"user_id": user_id}
 #         ).sort("date", -1)
-#         print("1")
 #         histories = list(histories_cursor)
-#         print("2")
 
 #         # 2. Thu thập tất cả meal IDs cần truy vấn
 #         meal_ids = set()
@@ -177,11 +143,8 @@ def get_meal_history(current_user):
 #             },
 #         )
 
-#         print("3")
 #         meals = list(meals_cursor)
-#         print("4")
 #         print("Meals loaded:", len(meals))
-#         print("5")
 #         meal_dict = {
 #             str(meal["_id"]): {
 #                 "id": str(meal["_id"]),
@@ -195,7 +158,6 @@ def get_meal_history(current_user):
 #             }
 #             for meal in meals
 #         }
-#         print("6")
 
 #         # 4. Gộp dữ liệu món ăn vào lịch sử
 #         result = []
@@ -223,8 +185,95 @@ def get_meal_history(current_user):
 #                     "plan": new_plan,
 #                 }
 #             )
-#         print("7")
 #         return jsonify(result), 200
 #     except Exception as e:
 #         traceback.print_exc()
 #         return jsonify({"error": str(e)}), 500
+
+
+@meals_history_bp.route("/list", methods=["GET"])
+@login_required
+def get_meal_history(current_user):
+    try:
+        user_id = str(current_user["_id"])
+
+        # 1. Lấy lịch sử
+        histories = list(
+            current_app.db.meal_histories.find({"user_id": user_id}).sort("date", -1)
+        )
+
+        # 2. Thu thập tất cả meal id
+        meal_ids = set()
+
+        for history in histories:
+            for day in history.get("plan", []):
+                for meal_time in day.values():
+                    for entry in meal_time.values():
+                        if entry and entry.get("id"):
+                            try:
+                                meal_ids.add(ObjectId(entry["id"]))
+                            except Exception:
+                                pass
+
+        # 3. Query meals (chỉ lấy các field cần thiết)
+        meal_dict = {}
+
+        if meal_ids:
+            meals_cursor = current_app.db.meals.find(
+                {"_id": {"$in": list(meal_ids)}},
+                {
+                    "_id": 1,
+                    "title": 1,
+                    "energy": 1,
+                    "price": 1,
+                    "main_image": 1,
+                },
+            )
+
+            for meal in meals_cursor:
+                meal_dict[str(meal["_id"])] = {
+                    "id": str(meal["_id"]),
+                    "name": meal.get("title", ""),
+                    "calories": meal.get("energy", 0),
+                    "price": meal.get("price", 0),
+                    "image": meal.get("main_image", ""),
+                }
+
+        # 4. Ghép dữ liệu
+        result = []
+
+        for history in histories:
+            new_plan = []
+
+            for day in history.get("plan", []):
+                new_day = {}
+
+                for meal_time_name in ["Sáng", "Trưa", "Tối"]:
+                    meal_time = day.get(meal_time_name, {})
+                    new_meal_time = {}
+
+                    for course in ["main", "snack"]:
+                        entry = meal_time.get(course)
+
+                        if entry and entry.get("id"):
+                            new_meal_time[course] = meal_dict.get(entry["id"])
+                        else:
+                            new_meal_time[course] = None
+
+                    new_day[meal_time_name] = new_meal_time
+
+                new_plan.append(new_day)
+
+            result.append(
+                {
+                    "_id": str(history["_id"]),
+                    "date": history.get("date"),
+                    "plan": new_plan,
+                }
+            )
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
