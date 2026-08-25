@@ -20,7 +20,6 @@ export default function Search() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [meals, setMeals] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [showCamera, setShowCamera] = useState(false);
   const [ingredients, setIngredients] = useState([]);
@@ -30,34 +29,91 @@ export default function Search() {
   let streamRef = useRef(null);
 
   useEffect(() => {
-    if (showCamera) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          streamRef.current = stream;
-          videoRef.current.srcObject = stream;
-        })
-        .catch((err) => {
-          console.error("Không thể mở camera:", err);
-          setShowCamera(false);
+    const startCamera = async () => {
+      if (!showCamera) return;
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: {
+              ideal: "environment",
+            },
+            width: {
+              ideal: 1280,
+            },
+            height: {
+              ideal: 720,
+            },
+          },
+          audio: false,
         });
-    } else {
+
+        streamRef.current = stream;
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (err) {
+        console.error("Không thể mở camera sau:", err);
+
+        // Fallback nếu camera sau không khả dụng
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+          });
+
+          streamRef.current = stream;
+
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        } catch (fallbackError) {
+          console.error("Không thể mở camera:", fallbackError);
+          alert("Không thể truy cập camera. Vui lòng kiểm tra quyền camera.");
+          setShowCamera(false);
+        }
+      }
+    };
+
+    startCamera();
+
+    return () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
       }
-    }
+    };
   }, [showCamera]);
 
   const capturePhoto = () => {
-    const context = canvasRef.current.getContext("2d");
-    context.drawImage(videoRef.current, 0, 0, 320, 240);
-    canvasRef.current.toBlob((blob) => {
-      setSelectedImage(
-        new File([blob], "captured.jpg", { type: "image/jpeg" })
-      );
-      setPreviewUrl(URL.createObjectURL(blob));
-      setShowCamera(false);
-    });
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (!video || !canvas) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const context = canvas.getContext("2d");
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) return;
+
+        const file = new File([blob], "captured.jpg", {
+          type: "image/jpeg",
+        });
+
+        setSelectedImage(file);
+        setPreviewUrl(URL.createObjectURL(blob));
+        setShowCamera(false);
+      },
+      "image/jpeg",
+      0.85,
+    );
   };
 
   const handleImageChange = (e) => {
@@ -77,7 +133,7 @@ export default function Search() {
       formData.append("image", selectedImage);
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/search/image-search`,
-        formData
+        formData,
       );
       setMeals(res.data.meals || []);
       setIngredients(res.data.ingredients || []);
@@ -125,11 +181,16 @@ export default function Search() {
 
         {showCamera && (
           <div>
-            <video ref={videoRef} autoPlay width="320" height="240" />
-            <canvas
-              ref={canvasRef}
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
               width="320"
               height="240"
+            />
+            <canvas
+              ref={canvasRef}
               style={{ display: "none" }}
             />
             <div className="my-2">
@@ -226,13 +287,7 @@ export default function Search() {
         ))}
       </Row>
 
-      {selectedMeal && (
-        <MealDetailModal
-          show={showModal}
-          handleClose={() => setShowModal(false)}
-          meal={selectedMeal}
-        />
-      )}
+      
       {selectedMeal && (
         <>
           <MealDetailModal
